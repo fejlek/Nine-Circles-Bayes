@@ -35,8 +35,17 @@ observable quantities/outcomes (such as future observations)
 Bayes rule:
 
 definition of conditional probability
-$$p(y, \theta) = p(y \mid \theta)p(\theta)$$ implies
-$$p(\theta \mid y) = \frac{p(y, \theta)}{p(y)} = \frac{p(y \mid \theta)p(\theta)}{\int p(y \mid \theta)p(\theta) \mathrm{d}\theta}$$
+
+``` math
+p(y, \theta) = p(y \mid \theta)p(\theta)
+```
+
+implies
+
+``` math
+p(\theta \mid y) = \frac{p(y, \theta)}{p(y)} = \frac{p(y \mid \theta)p(\theta)}{\int p(y \mid \theta)p(\theta) \mathrm{d}\theta}
+```
+
 $p(y \mid \theta)$ is *likelihood* function -\> posterior probability
 (and thus Bayes inference) for $\theta$ depends on the observed data $y$
 only through the likelihood function -\> *likelihood principle*
@@ -48,12 +57,17 @@ estimate is the posterior distribution, no one true interval
 
 *prior predictive predictions* (before data $y$ are gathered)
 
-$$ p(y) = \int p(y, \theta) \mathrm{d}\theta = \int p(y \mid \theta) p(\theta) \mathrm{d}\theta$$
+``` math
+p(y) = \int p(y, \theta) \mathrm{d}\theta = \int p(y \mid \theta) p(\theta) \mathrm{d}\theta$$
+```
 
 *posterior predictive distribution*: we gather $y$ and want to predict
 new observable $\tilde y$:
 
- $p(\tilde y \mid y) = \int p(\tilde y, \theta \mid y) \mathrm{d}\theta = \int p(\tilde y \mid y, \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta = \int p(\tilde y \mid \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta $
+``` math
+p(\tilde y \mid y) = \int p(\tilde y, \theta \mid y) \mathrm{d}\theta = \int p(\tilde y \mid y, \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta = \int p(\tilde y \mid \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta
+```
+
 we used in the last derivation that $\tilde y$ is conditionally
 independent of $y$
 
@@ -62,7 +76,10 @@ independent of $y$
 ### Binomial data
 
 sequence of “Bernoulli trials”, binomial sapling model is
-$$ p(y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}$$
+
+``` math
+p(y \mid \theta) = \binom{n}{y} \theta^y (1-\theta)^{n-y}
+```
 
 conditioning on observed data: calculating and interpreting the
 appropriate posterior distribution—the conditional probability
