@@ -53,7 +53,7 @@ $$ p(y) = \int p(y, \theta) \mathrm{d}\theta = \int p(y \mid \theta) p(\theta) \
 *posterior predictive distribution*: we gather $y$ and want to predict
 new observable $\tilde y$:
 
-$$ p(\tilde y \mid y) = \int p(\tilde y, \theta \mid y) \mathrm{d}\theta = \int p(\tilde y \mid y, \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta = \int p(\tilde y \mid \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta $$
+ $p(\tilde y \mid y) = \int p(\tilde y, \theta \mid y) \mathrm{d}\theta = \int p(\tilde y \mid y, \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta = \int p(\tilde y \mid \theta) p(\theta \mid y)p(\theta) \mathrm{d}\theta $
 we used in the last derivation that $\tilde y$ is conditionally
 independent of $y$
 
