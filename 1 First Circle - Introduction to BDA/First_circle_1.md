@@ -693,7 +693,7 @@ kidney_cancer$deaths_all = kidney_cancer$dc + kidney_cancer$dc.2
 ```
 
 Let us first compute the MLE estimate of the cancer death rate
-$\theta_i = \frac{\#deaths}{population}$. In addition, we will visualize
+$\theta_i = \frac{\# deaths}{population}$. In addition, we will visualize
 on a map of U.S. counties for which the rate estimate $\hat\theta$ is
 greater than the 0.95 quantile and lower than the 0.05 quantile across
 all counties.
@@ -959,8 +959,9 @@ dens_data <- data.frame(x = dens$x, y = dens$y)
 ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "l", y = "Posterior Density")
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-41-1.png)<!-- --> We
-clearly observe that $e$ is significantly higher than $l$. The posterior
+![](First_circle_1_files/figure-GFM/unnamed-chunk-41-1.png)<!-- --> 
+
+We clearly observe that $e$ is significantly higher than $l$. The posterior
 of $s$ must be computed from the lp, which represents a posterior draw
 of $\log p(s,D \mid e,l)$
 (<https://mc-stan.org/docs/stan-users-guide/latent-discrete.html#change-point.section>)
@@ -988,8 +989,9 @@ dens_data <- data.frame(x = coal_mining_disasters$Year, y = p_s)
 ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "s", y = "Posterior Density") 
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-43-1.png)<!-- --> We
-estimated that the frequency change occurred between 1885 and 1900.
+![](First_circle_1_files/figure-GFM/unnamed-chunk-43-1.png)<!-- --> 
+
+We estimated that the frequency change occurred between 1885 and 1900.
 
 # References
 
