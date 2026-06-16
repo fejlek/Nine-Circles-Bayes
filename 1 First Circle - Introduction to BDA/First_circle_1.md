@@ -693,7 +693,7 @@ kidney_cancer$deaths_all = kidney_cancer$dc + kidney_cancer$dc.2
 ```
 
 Let us first compute the MLE estimate of the cancer death rate
-$\theta_i = \frac{#deaths}{population}$. In addition, we will visualize
+$\theta_i = \frac{\#deaths}{population}$. In addition, we will visualize
 on a map of U.S. counties for which the rate estimate $\hat\theta$ is
 greater than the 0.95 quantile and lower than the 0.05 quantile across
 all counties.
@@ -873,7 +873,7 @@ we get the following model.
 \begin{align*}
 e & \sim \text{Exp }(r_e) \\
 l & \sim \text{Exp }(l_e) \\
-s \sim \text{uniform }(1, T) \\
+s & \sim \text{uniform }(1, T) \\
 D_t & \sim \text{Poisson }(t < s \text{ ? } e : l) 
 \end{align*}
 ```
