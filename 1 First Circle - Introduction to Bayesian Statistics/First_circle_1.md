@@ -6,6 +6,16 @@ Jiří Fejlek
 2026-06-16
 <br/>
 
+<br/> This is the first part of the first circle dedicated to Bayesian
+Statistics. I plan to organize the earlier circles mostly as summaries
+of topics covered in *Bayesian Data Analysis 3rd edition* (Gelman et al.
+1995) with bits and pieces taken from other sources. The reason is
+pretty simple. At the time of writing these lines, I do not feel being
+as much versed in Bayesian statistics as I was with generalized linear
+models and “frequentist” statistics in general, when I started working
+on *Nine Circles of Statistical Modeling*. So, it is time to go through
+the fundamentals first… <br/>
+
 ## Table of Contents
 - [Bayesian Data Analysis](#bayesian-data-analysis)
 - [Single-parameter models](#single-parameter-models)
@@ -873,7 +883,7 @@ we get the following model.
 \begin{align*}
 e & \sim \text{Exp }(r_e) \\
 l & \sim \text{Exp }(l_e) \\
-s & \sim \text{uniform }(1, T) \\
+s &\sim \text{uniform }(1, T) \\
 D_t & \sim \text{Poisson }(t < s \text{ ? } e : l) 
 \end{align*}
 ```
@@ -959,11 +969,11 @@ dens_data <- data.frame(x = dens$x, y = dens$y)
 ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "l", y = "Posterior Density")
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-41-1.png)<!-- --> 
+![](First_circle_1_files/figure-GFM/unnamed-chunk-41-1.png)<!-- -->
 
-We clearly observe that $e$ is significantly higher than $l$. The posterior
-of $s$ must be computed from the lp, which represents a posterior draw
-of $\log p(s,D \mid e,l)$
+We clearly observe that $e$ is significantly higher than $l$. The
+posterior of $s$ must be computed from the lp, which represents a
+posterior draw of $\log p(s,D \mid e,l)$
 (<https://mc-stan.org/docs/stan-users-guide/latent-discrete.html#change-point.section>)
 
 ``` r
@@ -989,7 +999,7 @@ dens_data <- data.frame(x = coal_mining_disasters$Year, y = p_s)
 ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "s", y = "Posterior Density") 
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-43-1.png)<!-- --> 
+![](First_circle_1_files/figure-GFM/unnamed-chunk-43-1.png)<!-- -->
 
 We estimated that the frequency change occurred between 1885 and 1900.
 
