@@ -410,6 +410,7 @@ curve(psym_triangle(x, 0.25, 0.75), from = 0, to = 1,
 ```
 
 ![](First_circle_1_files/figure-GFM/unnamed-chunk-12-1.png)<!-- -->
+
 Since we do not know the analytical solution for this prior to the Bayes
 updating, we have to compute the posterior distribution numerically. The
 easiest approach is probably *grid approximation* (McElreath 2018). In
