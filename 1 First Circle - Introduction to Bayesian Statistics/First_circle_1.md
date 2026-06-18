@@ -22,7 +22,7 @@ the fundamentals first… <br/>
   - [Binomial Model](#binomial-model)
   - [Poisson Model](#poisson-model)
   - [Exponential Model](#exponential-model)
-- [Coal Mining Disasters](#coal-mining-disasters)
+- [German Tank Problem](#german-tank-problem)
 - [References](#references)
 
 ## Bayesian Data Analysis
@@ -105,7 +105,7 @@ Bayesian inference much more easily handles the natural complexities
 that plague real data, such as missing data, measurement errors,
 hierarchical/multilevel models, latent variables, small datasets, and so
 on. We encountered some of these in *Nine Circles of Statistical
-Modeling*, and we observed, for example, how missing data make
+Modeling* and observed, for example, how missing data can make
 traditional inference much more complex. Hence, while on simple datasets
 we get the same results for a bit more work, Bayesian inference can
 provide huge benefits when it truly counts.
@@ -229,8 +229,8 @@ pbeta(0.5, alpha_all, beta_all, lower.tail = FALSE, log.p = FALSE)
 
     ## [1] 1.146058e-42
 
-We observe that the posterior is significantly more concentrated, with
-the maximum on a value less than $0.5$, which prompted Laplace to be
+We see that the posterior is significantly more concentrated, with the
+maximum on a value less than $0.5$, which prompted Laplace to be
 “morally certain” that $\theta < 0.5$ (Gelman et al. 1995).
 
 #### Beta prior
@@ -315,7 +315,7 @@ beta prior ($a$ and $b$). Ultimately, we can get the following sum
 E(\theta \mid y) = \frac{y}{n}\frac{n}{n+a+b} + \frac{a}{a+b}\frac{a+b}{n+a+b}
 ```
 
-We observe that the posterior mean of $\theta$ can be written as the
+We can see that the posterior mean of $\theta$ can be written as the
 weight sum of the MLE estimate (representing the information we get from
 the data) and the mean of the prior. More specifically, it is an affine
 combination ($\frac{n}{n+a+b} + \frac{a+b}{n+a+b} = 1$ ), which means
@@ -544,7 +544,7 @@ stan_data <- list(
 )
 
 fit <- stan(
-  file  = "C:/Users/elini/Desktop/nine circles 3/stan1.stan",
+  file  = "C:/Users/elini/Desktop/nine circles 3/f1_s1.stan",
   data = stan_data,
   chains = 4,
   iter = 4000,
@@ -597,7 +597,7 @@ dens <- density(extract(fit)$theta)
 dens_data <- data.frame(x = dens$x, y = dens$y)
 
 
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1)
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Theta') + ylab('Posterior Density')
 ```
 
 ![](First_circle_1_files/figure-GFM/unnamed-chunk-25-1.png)<!-- --> The
@@ -627,7 +627,7 @@ hdi_high = hdi(extract(fit)$theta, credMass = 0.95)['upper']
 hdi_data <- subset(dens_data, x >= hdi_low & x <= hdi_high)
 
 ggplot(dens_data, aes(x = x, y = y)) + 
-  geom_line(size = 1) + 
+  geom_line(linewidth = 1) + 
   geom_area(data = hdi_data, aes(x = x, y = y), fill = "purple", alpha = 0.4) +
   geom_vline(xintercept = c(hdi_low, hdi_high), linetype = "dashed", color = "purple") +
   theme_classic() +
@@ -757,8 +757,8 @@ beta <- 50000
 
 # mean is alpha/beta
 
-hist(kidney_cancer$theta_MLE, breaks = 100, ylab = "Posterior PDF", xlab = "Theta", main = '')
-curve(dgamma(x, alpha, beta, log = FALSE)/50, from = 0, to = 3e-4, 
+hist(kidney_cancer$theta_MLE, prob = TRUE, breaks = 100, ylab = "Prior PDF", xlab = "Theta", main = '')
+curve(dgamma(x, alpha, beta, log = FALSE), from = 0, to = 3e-4, 
       col = "red", lwd = 2, add = TRUE)
 ```
 
@@ -804,8 +804,8 @@ Some extremes now occur in more densely populated coastal regions.
 
 The last single-parameter model we will mention in this fart part of our
 introduction to Bayesian inference is the exponential model. The
-exponential distribution is usually used to model time intervals until
-an event occurs. The exponential distribution is as follows.
+exponential distribution is commonly used to model the time until an
+event occurs. The exponential distribution is as follows.
 
 ``` math
 p(y \mid \theta) = \theta e^{-\theta y}
@@ -819,132 +819,262 @@ $\text{Gamma }(\alpha, \beta)$ prior, we get the posterior
 p(\theta \mid y) = \text{Gamma }(\alpha + n, \beta + \sum_i y_i).
 ```
 
-## Coal Mining Disasters
-
-To conclude the first part of our introduction to Bayesian statistics,
-we will consider a model of coal mining disasters in the U.K. for the
-years 1851–1962
-(<https://mc-stan.org/docs/stan-users-guide/latent-discrete.html#change-point.section>)
-to demonstrate the flexibility of Bayesian inference.
+Let us demonstrate the use of the exponential distribution on the call
+center dataset
+(<https://www.kaggle.com/code/santosjgnd/call-center-dataset/notebook>)
+that consists of time differences between successive calls.
 
 ``` r
-coal_mining_disasters = read.csv("C:/Users/elini/Desktop/nine circles 3/COAL MINING DISASTERS UK.csv",sep= ";")
-
-head(coal_mining_disasters)
+call_center = read.csv("C:/Users/elini/Desktop/nine circles 3/call_center_small.csv", sep = ',')
+head(call_center)
 ```
 
-    ##   Year Count
-    ## 1 1851     4
-    ## 2 1852     5
-    ## 3 1853     4
-    ## 4 1854     1
-    ## 5 1855     0
-    ## 6 1856     4
+    ##              datetime interval
+    ## 1 2021-01-01 09:12:58        0
+    ## 2 2021-01-01 09:47:31     2073
+    ## 3 2021-01-01 09:47:31        0
+    ## 4 2021-01-01 10:00:29      778
+    ## 5 2021-01-01 10:00:29        0
+    ## 6 2021-01-01 10:22:05     1296
+
+First, we will check whether the time intervals follow an exponential
+distribution (we fit the data with an exponential distribution using the
+rate $n/\sum_i y_i$).
 
 ``` r
-plot(coal_mining_disasters$Year, coal_mining_disasters$Count, xlab = 'Year', ylab = '# Coal Mining Disasters')
+call_center = read.csv("C:/Users/elini/Desktop/nine circles 3/call_center_small.csv", sep = ',')
+hist(call_center$interval, prob = TRUE, breaks = 100, ylab = "Density", xlab = "Time Intervals", main = '')
+curve(dexp(x, rate = 1/mean(call_center$interval), log = FALSE), from = 0, to = 8000, 
+      col = "red", lwd = 2, add = TRUE)
 ```
 
 ![](First_circle_1_files/figure-GFM/unnamed-chunk-37-1.png)<!-- -->
 
-The data clearly show that the number of disasters decreased over time.
-To model change, we will consider a *change point model* from
-<https://mc-stan.org/docs/stan-users-guide/latent-discrete.html#change-point.section>.
-We will assume that, early on, the number of disasters had a Poisson
-distribution with the parameter $e$.
+Well, it seems they do not. However, let us repeat the fit only for time
+intervals greater than zero.
 
-``` math
-\begin{align*}
-D_t & \sim \text{Poisson }(e) \\
-e & \sim \text{Exp }(r_e)
-\end{align*}
+``` r
+call_center = read.csv("C:/Users/elini/Desktop/nine circles 3/call_center_small.csv", sep = ',')
+hist(call_center$interval[call_center$interval> 0], prob = TRUE, breaks = 100, ylab = "Density", xlab = "Time Intervals > 0", main = '')
+curve(dexp(x, rate = 1/mean(call_center$interval[call_center$interval> 0]), log = FALSE), from = 0, to = 8000, 
+      col = "red", lwd = 2, add = TRUE)
 ```
 
-Later on, this distribution changed to a Poisson distribution with the
-parameter $l$.
+![](First_circle_1_files/figure-GFM/unnamed-chunk-38-1.png)<!-- -->
 
-``` math
-\begin{align*}
-D_t & \sim \text{Poisson }(l) \\
+That looks much better. We observe that the data are not purely from the
+exponential distribution; there is another process that generates an
+“excessive” number of zeros. What is actually happening here is that the
+call center cannot process all the calls as they go in, since they have
+only so many operators. Hence, when too many people call at once, the
+call center has to process them in batches, which appears in the dataset
+as a large number of calls that start at the same time.
 
-\end{align*}
-```
+We have discussed models for data with an excessive number of zeros in
+*Fourth Circle: Count Regression*, namely *hurdle models* and
+*zero-inflated models*. We will discuss hurdle models here, since the
+exponential distribution (unlike, e.g., the Poisson) is a continuous
+distribution and hence does not produce exact zeros on its own.
 
-We will assume that the switch occurred at some time $s$, with a uniform
-prior.
+A hurdle model is a simple two-part model. The first part is a Bernoulli
+model (with parameter $\theta$) that generates either a zero or a
+nonzero response. Provided that the response is nonzero, the response is
+generated from a truncated distribution. In our case, it is a
+zero-truncated exponential distribution with rate $\lambda$, which is
+just an exponential distribution, since the exponential distribution is
+continuous.
 
-``` math
-s \sim \text{uniform }(1, T)
-```
-
-In addition, we will assume exponential priors for $e$ and $l$. Overall,
-we get the following model.
-
-``` math
-\begin{align*}
-e & \sim \text{Exp }(r_e) \\
-l & \sim \text{Exp }(l_e) \\
-s &\sim \text{uniform }(1, T) \\
-D_t & \sim \text{Poisson }(t < s \text{ ? } e : l) 
-\end{align*}
-```
-
-The expression $D_t \sim \text{Poisson }(t < s \text{ ? } e : l)$ is
-from C++ and denotes the condition, if $t < s$ then $e$ otherwise $l$
-(<https://mc-stan.org/docs/stan-users-guide/latent-discrete.html#change-point.section>).
-
-The following Stan code describes our model. The implementation is a bit
-more complicated because Stan does not allow discrete parameters; hence,
-$s$ must be marginalized out (see
-<https://mc-stan.org/docs/stan-users-guide/latent-discrete.html#change-point.section>
-for details).
+Let us fit the appropriate Bayesian model. We will assume a beta prior
+for $\theta$ and a gamma prior for $\lambda$. The Stan code for a hurdle
+model is as follows
+(<https://mc-stan.org/docs/2_24/stan-users-guide/zero-inflated-section.html>).
 
 ``` default
 data {
-  real<lower=0> r_e;
-  real<lower=0> r_l;
-
-  int<lower=1> T;
-  array[T] int<lower=0> D;
-}
-transformed data {
-  real log_unif;
-  log_unif = -log(T);
+  int<lower=0> N;          // Number of observations
+  vector<lower=0>[N] y;    // Observed lengths of time intervals
+  real<lower=0> alpha_b;   // Alpha parameter of beta prior 
+  real<lower=0> beta_b;    // Beta parameter of beta prior
+  real<lower=0> alpha_g;   // Alpha parameter of gamma prior 
+  real<lower=0> beta_g;    // Beta parameter of gamma prior  
 }
 parameters {
-  real<lower=0> e;
-  real<lower=0> l;
+  real<lower=0, upper=1> theta;  // Probability of excess zero
+  real<lower=0> lambda;          // Exponential rate parameter
 }
-transformed parameters {
-  vector[T] lp;
-  lp = rep_vector(log_unif, T);
-  for (s in 1:T) {
-    for (t in 1:T) {
-      lp[s] = lp[s] + poisson_lpmf(D[t] | t < s ? e : l);
+model {
+  // Priors
+  theta ~ beta(alpha_b, beta_b);
+  lambda ~ gamma(alpha_g, beta_g);
+
+  // Likelihood
+  for (n in 1:N) {
+    if (y[n] == 0)
+      target += log(theta);
+    else
+      target += log1m(theta) + exponential_lpdf(y[n] | lambda); // in general we have to truncate!, e.g., add -poisson_lccdf(0 | lambda) for poisson
+  }
+}
+generated quantities {
+  vector[N] y_rep;         // Simulated dataset
+  
+  for (i in 1:N) {
+    // Determine if the observation is a structural zero
+    int is_zero = bernoulli_rng(theta);
+    
+    if (is_zero == 1) {
+      y_rep[i] = 0;
+    } else {
+      // Otherwise, draw from the exponential distribution
+      y_rep[i] = exponential_rng(lambda);
     }
   }
 }
-model {
-  e ~ exponential(r_e);
-  l ~ exponential(r_l);
-  target += log_sum_exp(lp);
-}
 ```
 
-Let us run the MCMC algorithm to estimate $s$, $e$, and $l$.
+Note that we also added a *generated quantities* block that generates
+new datasets from the parameter’s posterior draws; we can then compare
+these simulated datasets with the observed data to assess how well our
+model fits the data. Let us fit the model. We choose uniform prior for
+$\theta$ (beta with $\alpha = 1$, $\beta = 1$). For the rate, we choose
+$\text{Gamma }(1,0.5)$, since it seems that the non-zero intervals
+between calls are quite long (i.e., the rate is probably small).
+
+``` r
+curve(dgamma(x, 1, 0.5), from = 0, to = 5, 
+      col = "blue", lwd = 2, ylab = "Prior PDF", xlab = "Lambda")
+```
+
+![](First_circle_1_files/figure-GFM/unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
 stan_data <- list(
-  D = coal_mining_disasters$Count,
-  T = length(coal_mining_disasters$Count),
-  r_e = 2,
-  r_l = 1
+  N = length(call_center$interval),
+  y = call_center$interval,
+  alpha_b = 1,
+  beta_b = 1,
+  alpha_g = 1,
+  beta_g = 0.5
 )
 
+fit <- stan(
+  file  = "C:/Users/elini/Desktop/nine circles 3/f1_s2.stan",
+  data = stan_data,
+  chains = 4,
+  iter = 3000,
+  warmup = 2000,
+  seed = 123,
+  refresh = 0
+)
+```
 
+The posterior densities of $\theta$ and $\lambda$ are as follows.
+
+``` r
+# posterior density theta
+
+dens <- density(extract(fit)$theta)
+dens_data <- data.frame(x = dens$x, y = dens$y)
+
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Theta') + ylab('Posterior Density')
+```
+
+![](First_circle_1_files/figure-GFM/unnamed-chunk-42-1.png)<!-- -->
+
+``` r
+# posterior density lambda
+
+dens <- density(extract(fit)$lambda)
+dens_data <- data.frame(x = dens$x, y = dens$y)
+
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Lambda') + ylab('Posterior Density')
+```
+
+![](First_circle_1_files/figure-GFM/unnamed-chunk-43-1.png)<!-- -->
+
+Let us compare our data with datasets generated for parameters sampled
+from the posterior distribution.
+
+``` r
+y_sim <- extract(fit)$y_rep
+
+par(mfrow = c(1, 2))
+hist(call_center$interval, breaks = 100, plot=TRUE, xlab = '', main = 'Observed Dataset')
+hist(y_sim[100, 1:length(call_center$interval)], breaks = 100, xlab = '', main = 'Simulated Dataset')
+```
+
+![](First_circle_1_files/figure-GFM/unnamed-chunk-44-1.png)<!-- -->
+
+``` r
+hist(y_sim[500, 1:length(call_center$interval)], breaks = 100, xlab = '', main = 'Simulated Dataset')
+hist(y_sim[1000, 1:length(call_center$interval)], breaks = 100, xlab = '', main = 'Simulated Dataset')
+```
+
+![](First_circle_1_files/figure-GFM/unnamed-chunk-44-2.png)<!-- -->
+
+``` r
+hist(y_sim[1100, 1:length(call_center$interval)], breaks = 100, xlab = '', main = 'Simulated Dataset')
+hist(y_sim[1250, 1:length(call_center$interval)], breaks = 100, xlab = '', main = 'Simulated Dataset')
+```
+
+![](First_circle_1_files/figure-GFM/unnamed-chunk-44-3.png)<!-- --> We
+observe that the simulated datasets are quite close to the observed data
+(we will explore Bayesian model diagnostics in some later project).
+
+## German Tank Problem
+
+As the final step in this introduction, we will look at the famous
+German tank problem
+(<https://en.wikipedia.org/wiki/German_tank_problem>). The task is to
+estimate the population size $N$ from a random sample (without
+replacement) drawn from ${1, \ldots, N}$. This task is known as the
+German tank problem because these estimates were used by the Allies
+during the Second World War to estimate German tank production using the
+serial numbers of destroyed/captured tanks. It turned out, after
+reviewing official records, that these estimates were much more accurate
+than the intelligence estimate.
+
+The Stan code for solving the German tank problem is as follows. We
+should note here that this is an “approximation”. The code below solves
+the problem of estimating a *real* $N_\text{total}$ using samples from
+$\text{Uniform} (0, N_\text{total})$. The primary reason to do it this
+way is that Stan does not allow sampling of discrete-valued parameters.
+
+The prior in the code is uniform over the interval *\[0, N_max_est\]*.
+
+``` default
+data {
+  int<lower=0> N;             // Number of observed tanks
+  vector[N] y;                // Observed serial numbers
+  real<lower=0> N_max_est;    // Prior estimate of N_max
+}
+parameters {
+  real<lower=max(y)> N_total;  // True population size
+}
+
+model {
+  // Prior for N_total
+  N_total ~ uniform(max(y), N_max_est); 
+  
+  // Likelihood
+  for (i in 1:N) {
+    y[i] ~ uniform(0, N_total);
+  }
+}
+```
+
+Let us fit the model to observations 19, 40, 42, and 60 (taken from
+<https://en.wikipedia.org/wiki/German_tank_problem>).
+
+``` r
+stan_data <- list(
+  N = 4,
+  y = c(19, 40, 42, 60),
+  N_max_est = 200
+)
 
 fit <- stan(
-  file  = "C:/Users/elini/Desktop/nine circles 3/stan2.stan",
+  file  = "C:/Users/elini/Desktop/nine circles 3/f1_s3.stan",
   data = stan_data,
   chains = 4,
   iter = 4000,
@@ -954,55 +1084,89 @@ fit <- stan(
 )
 ```
 
-The sampled posteriors of $e$ and $l$ are as follows.
+Let us plot the posterior density. The red line denotes the mode, the
+purple line denotes the median, and the blue line denotes the mean.
 
 ``` r
-dens <- density(extract(fit)$e)
+dens <- density(extract(fit)$N_total)
 dens_data <- data.frame(x = dens$x, y = dens$y)
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "e", y = "Posterior Density")
+
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlim(50, 150) +  
+  geom_vline(xintercept = mean(extract(fit)$N_total), color = "blue", linetype = "dashed", linewidth  = 1) +
+  geom_vline(xintercept = dens$x[which.max(dens$y)], color = "red", linetype = "dashed", linewidth  = 1) +
+  geom_vline(xintercept = median(extract(fit)$N_total), color = "purple", linetype = "dashed", linewidth  = 1) +
+  xlab('N_total') + ylab('Posterior Density') +
+  annotate(geom = "text", x = mean(extract(fit)$N_total), y = +Inf, 
+           label = round(mean(extract(fit)$N_total),2), color = "blue", 
+           vjust = 1.5, hjust = -0.1) + 
+  annotate(geom = "text", x = dens$x[which.max(dens$y)], y = +Inf, 
+           label = round(dens$x[which.max(dens$y)],2), color = "red", 
+           vjust = 1.5, hjust = -0.1) +
+ annotate(geom = "text", x = median(extract(fit)$N_total), y = +Inf, 
+           label = round(median(extract(fit)$N_total),2), color = "purple",  
+           vjust = 1.5, hjust = -0.1)
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-40-1.png)<!-- -->
+![](First_circle_1_files/figure-GFM/unnamed-chunk-47-1.png)<!-- -->
+
+We observe that these estimators are quite in line with those on
+<https://en.wikipedia.org/wiki/German_tank_problem> for the discrete
+problem (e.g., the minimum-variance unbiased estimator is 74).
+
+The last thing we will mention in this part is one important
+observation. Up to this point, all our priors were *proper* probability
+densities However, we can look at the Bayes formula purely
+algebraically, and we can always compute posterior distribution provided
+that $p(y \mid \theta)p(\theta)$ has finite integral (i.e., can be
+normalized to one) regardless whether $p(\theta)$ is a density or not.
+
+Hence, we can suppose $p(\theta) = 1$ (flat prior) and run Stan code
+like this
+
+``` default
+data {
+  int<lower=0> N;             // Number of observed tanks
+  vector[N] y;                // Observed serial numbers
+}
+parameters {
+  real<lower=max(y)> N_total;  // True population size
+}
+
+model {
+  // Likelihood for a continuous uniform draw and no prior! (i.e., prior = 1)
+  for (i in 1:N) {
+    y[i] ~ uniform(1, N_total);
+  }
+}
+```
+
+and get a reasonable result.
 
 ``` r
-dens <- density(extract(fit)$l)
-dens_data <- data.frame(x = dens$x, y = dens$y)
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "l", y = "Posterior Density")
+stan_data <- list(
+  N = 4,
+  y = c(19, 40, 42, 60)
+)
+
+fit <- stan(
+  file  = "C:/Users/elini/Desktop/nine circles 3/f1_s4.stan",
+  data = stan_data,
+  chains = 4,
+  iter = 4000,
+  warmup = 2000,
+  seed = 123,
+  refresh = 0
+)
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-41-1.png)<!-- -->
+![](First_circle_1_files/figure-GFM/unnamed-chunk-50-1.png)<!-- --> We
+should, however, note that using these very flat priors is generally not
+recommended (see
+<https://github.com/stan-dev/stan/wiki/prior-choice-recommendations>).
+For example, they allow unreasonable parameter values, which makes MCMC
+sampling more difficult.
 
-We clearly observe that $e$ is significantly higher than $l$. The
-posterior of $s$ must be computed from the lp, which represents a
-posterior draw of $\log p(s,D \mid e,l)$
-(<https://mc-stan.org/docs/stan-users-guide/latent-discrete.html#change-point.section>)
-
-``` r
-p_sd <- extract(fit)$lp
-p_s <- colSums(exp(p_sd))
-p_s <- p_s/sum(p_s)
-
-dens_data <- data.frame(x = coal_mining_disasters$Year, y = log(p_s))
-
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "s", y = "Log Posterior Density") 
-```
-
-![](First_circle_1_files/figure-GFM/unnamed-chunk-42-1.png)<!-- -->
-
-``` r
-p_sd <- extract(fit)$lp
-p_s <- colSums(exp(p_sd))
-p_s <- p_s/sum(p_s)
-
-
-dens_data <- data.frame(x = coal_mining_disasters$Year, y = p_s)
-
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(size = 1) + labs(x = "s", y = "Posterior Density") 
-```
-
-![](First_circle_1_files/figure-GFM/unnamed-chunk-43-1.png)<!-- -->
-
-We estimated that the frequency change occurred between 1885 and 1900.
+    ## [1] 2246.976
 
 # References
 
