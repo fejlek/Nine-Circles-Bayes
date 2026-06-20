@@ -1159,8 +1159,9 @@ fit <- stan(
 )
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-50-1.png)<!-- --> We
-should, however, note that using these very flat priors is generally not
+![](First_circle_1_files/figure-GFM/unnamed-chunk-50-1.png)<!-- --> 
+
+We should, however, note that using these very flat priors is generally not
 recommended (see
 <https://github.com/stan-dev/stan/wiki/prior-choice-recommendations>).
 For example, they allow unreasonable parameter values, which makes MCMC
