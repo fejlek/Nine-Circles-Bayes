@@ -1032,7 +1032,7 @@ German tank problem because these estimates were used by the Allies
 during the Second World War to estimate German tank production using the
 serial numbers of destroyed/captured tanks. It turned out, after
 reviewing official records, that these estimates were much more accurate
-than the intelligence estimate.
+than the estimates provided by intelligence.
 
 The Stan code for solving the German tank problem is as follows. We
 should note here that this is an “approximation”. The code below solves
@@ -1159,13 +1159,17 @@ fit <- stan(
 )
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-50-1.png)<!-- --> 
+![](First_circle_1_files/figure-GFM/unnamed-chunk-50-1.png)<!-- -->
 
-We should, however, note that using these very flat priors is generally not
-recommended (see
+We should, however, note that using these very flat priors is generally
+not recommended (see
 <https://github.com/stan-dev/stan/wiki/prior-choice-recommendations>).
-For example, they allow unreasonable parameter values, which makes MCMC
+For example, they allow sampling of unreasonable parameter values, which makes MCMC
 sampling more difficult.
+
+``` r
+max(extract(fit)$N_total)
+```
 
     ## [1] 2246.976
 
