@@ -1164,7 +1164,7 @@ fit <- stan(
 We should, however, note that using these very flat priors is generally
 not recommended (see
 <https://github.com/stan-dev/stan/wiki/prior-choice-recommendations>).
-For example, they allow sampling of unreasonable parameter values, which makes MCMC
+For example, they allow unreasonable parameter values, which makes MCMC
 sampling more difficult.
 
 ``` r
