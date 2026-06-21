@@ -293,8 +293,9 @@ curve(dbeta(x, alpha, beta, ncp = 0, log = FALSE), from = 0.3, to = 0.6,
 abline(v = alpha_update/(alpha_update + beta_update), lty = "dotted", lwd = 2, col = "red")
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-7-1.png)<!-- --> The
-red distribution is the posterior distribution with the beta (gray)
+![](First_circle_1_files/figure-GFM/unnamed-chunk-7-1.png)<!-- --> 
+
+The red distribution is the posterior distribution with the beta (gray)
 prior. The blue distribution is the posterior distribution with a
 uniform prior. We observe that the red posterior is a bit more
 concentrated (since the prior was more specific) and shifted slightly to
@@ -1017,8 +1018,9 @@ hist(y_sim[1100, 1:length(call_center$interval)], breaks = 100, xlab = '', main 
 hist(y_sim[1250, 1:length(call_center$interval)], breaks = 100, xlab = '', main = 'Simulated Dataset')
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-44-3.png)<!-- --> We
-observe that the simulated datasets are quite close to the observed data
+![](First_circle_1_files/figure-GFM/unnamed-chunk-44-3.png)<!-- --> 
+
+We observe that the simulated datasets are quite close to the observed data
 (we will explore Bayesian model diagnostics in some later project).
 
 ## German Tank Problem
@@ -1116,7 +1118,7 @@ problem (e.g., the minimum-variance unbiased estimator is 74).
 The last thing we will mention in this part is one important
 observation. Up to this point, all our priors were *proper* probability
 densities However, we can look at the Bayes formula purely
-algebraically, and we can always compute posterior distribution provided
+algebraically, and hence, we can always compute posterior distribution provided
 that $p(y \mid \theta)p(\theta)$ has finite integral (i.e., can be
 normalized to one) regardless whether $p(\theta)$ is a density or not.
 
