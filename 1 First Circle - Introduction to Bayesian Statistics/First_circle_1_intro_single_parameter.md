@@ -705,8 +705,8 @@ kidney_cancer$pop_mean <- (kidney_cancer$pop + kidney_cancer$pop.2)/2
 kidney_cancer$deaths_all = kidney_cancer$dc + kidney_cancer$dc.2
 ```
 
-Let us first compute the MLE estimate of the cancer death rate
-$\theta_i = \frac{deaths}{population}$. In addition, we will visualize
+Let us first compute the MLE estimate of the cancer death rates
+$\theta_i = \frac{\text{deaths}}{\text{population}_i}$. In addition, we will visualize
 on a map of U.S. counties for which the rate estimate $\hat\theta$ is
 greater than the 0.95 quantile and lower than the 0.05 quantile across
 all counties.
