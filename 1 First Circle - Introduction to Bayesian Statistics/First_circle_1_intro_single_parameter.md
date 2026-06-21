@@ -313,7 +313,7 @@ beta prior ($a$ and $b$). Ultimately, we can get the following sum
 (Kruschke et al. 2014).
 
 ``` math
-E(\theta \mid y) = \frac{y}{n}\frac{n}{n+a+b} + \frac{a}{a+b}\frac{a+b}{n+a+b}
+E(\theta \mid y) = \frac{y}{n}\frac{n}{a+b+n} + \frac{a}{a+b}\frac{a+b}{a+b+n}
 ```
 
 We can see that the posterior mean of $\theta$ can be written as the
