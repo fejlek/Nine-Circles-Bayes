@@ -663,7 +663,7 @@ must be of the form
 p(\theta)  \propto \theta^{A} e^{B \theta},
 ```
 
-which corresponds to the gamma distribution (<https://en.wikipedia.org/wiki/Gamma_distribution)
+which corresponds to the gamma distribution (<https://en.wikipedia.org/wiki/Gamma_distribution>)
 
 ``` math
 p(\theta)  = \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha-1}e^{-\beta\theta}.
