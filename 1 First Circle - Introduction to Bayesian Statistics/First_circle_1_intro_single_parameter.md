@@ -381,6 +381,7 @@ curve(dbeta(x, alpha3, beta3, ncp = 0, log = FALSE), from = 0, to = 1,
 ```
 
 ![](First_circle_1_files/figure-GFM/unnamed-chunk-9-1.png)<!-- -->
+
 However, as the number of observations increases, the influence of
 priors diminishes.
 
@@ -662,7 +663,7 @@ must be of the form
 p(\theta)  \propto \theta^{A} e^{B \theta},
 ```
 
-which corresponds to the gamma distribution
+which corresponds to the gamma distribution (<https://en.wikipedia.org/wiki/Gamma_distribution)
 
 ``` math
 p(\theta)  = \frac{\beta^\alpha}{\Gamma(\alpha)} \theta^{\alpha-1}e^{-\beta\theta}.
