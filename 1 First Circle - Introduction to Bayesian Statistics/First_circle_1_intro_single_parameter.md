@@ -319,7 +319,7 @@ E(\theta \mid y) = \frac{y}{n}\frac{n}{a+b+n} + \frac{a}{a+b}\frac{a+b}{a+b+n}
 We can see that the posterior mean of $\theta$ can be written as the
 weight sum of the MLE estimate (representing the information we get from
 the data) and the mean of the prior. More specifically, it is an affine
-combination ($\frac{n}{n+a+b} + \frac{a+b}{n+a+b} = 1$ ), which means
+combination ($\frac{n}{a+b+n} + \frac{a+b}{a+b+n} = 1$ ), which means
 that the posterior mean will always lie between the MLE and the prior
 mean. We can also notice that as $n$ increases, the weight of the prior
 approaches zero, and the Bayesian inference relies more and more on the
