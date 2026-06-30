@@ -118,7 +118,7 @@ cases where we get the same results with a bit more work.
 ### Binomial Model
 
 Let us assume a sequence of “Bernoulli trials” $y_1, \ldots, y_n$
-($y_i \in \{0, 1\}$ for all $i$). The number of “successes” ($y = 0$)
+($y_i \in \{0, 1\}$ for all $i$). The number of “successes” ($y= \sum y_i$)
 has the distribution for the given probability of success $\theta$
 (i.e., likelihood)
 
@@ -1022,7 +1022,7 @@ hist(y_sim[1250, 1:length(call_center$interval)], breaks = 100, xlab = '', main 
 ![](First_circle_1_files/figure-GFM/unnamed-chunk-44-3.png)<!-- --> 
 
 We observe that the simulated datasets are quite close to the observed data
-(we will explore Bayesian model diagnostics in some later project).
+(we will explore Bayesian model diagnostics in more detail in some later project).
 
 ## German Tank Problem
 
@@ -1176,7 +1176,7 @@ max(extract(fit)$N_total)
 
     ## [1] 2246.976
 
-# References
+## References
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">

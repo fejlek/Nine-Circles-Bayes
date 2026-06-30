@@ -1174,7 +1174,7 @@ ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + labs(x = "s",
 
 We estimate that the change in frequency occurred between 1885 and 1900.
 
-# References
+## References
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">
