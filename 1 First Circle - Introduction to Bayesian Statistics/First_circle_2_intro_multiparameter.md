@@ -1,5 +1,6 @@
 # The First Circle: Introduction to Bayesian Statistics, Part Two
-<big>**Simple Multiparameter Models**</big>
+<big></big>
+<span style="font-size:large;"> **Simple Multiparameter Models** </span>
 
 <br/>
 Jiří Fejlek

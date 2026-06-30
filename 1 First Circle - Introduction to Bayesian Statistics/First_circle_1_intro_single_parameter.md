@@ -1,5 +1,5 @@
 # The First Circle: Introduction to Bayesian Statistics, Part One
-<big>**Single-parameter models**</big>
+<span style="font-size:large;"> **Single-parameter models** </span>
 
 <br/>
 Jiří Fejlek

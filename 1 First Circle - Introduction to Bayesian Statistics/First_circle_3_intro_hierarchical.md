@@ -1,5 +1,5 @@
 # The First Circle: Introduction to Bayesian Statistics, Part Three
-<big>**Introduction to Hierarchical Models**</big>
+<span style="font-size:large;"> **Introduction to Hierarchical Models** </span>
 
 <br/>
 Jiří Fejlek
