@@ -1,4 +1,5 @@
 # The First Circle: Introduction to Bayesian Statistics, Part One
+<big>**Single-parameter models**</big>
 
 <br/>
 Jiří Fejlek
@@ -602,8 +603,9 @@ dens_data <- data.frame(x = dens$x, y = dens$y)
 ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Theta') + ylab('Posterior Density')
 ```
 
-![](First_circle_1_files/figure-GFM/unnamed-chunk-25-1.png)<!-- --> The
-interval estimates from the posterior distribution are known as
+![](First_circle_1_files/figure-GFM/unnamed-chunk-25-1.png)<!-- --> 
+
+The interval estimates from the posterior distribution are known as
 *credible intervals*. One popular choice is the highest posterior
 density interval (HDPI); it is the narrowest interval that contains a
 specific probability mass of the posterior distribution (McElreath

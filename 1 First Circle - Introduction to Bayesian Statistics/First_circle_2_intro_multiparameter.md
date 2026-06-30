@@ -1,4 +1,5 @@
 # The First Circle: Introduction to Bayesian Statistics, Part Two
+<big>**Simple Multiparameter Models**</big>
 
 <br/>
 Jiří Fejlek
@@ -14,9 +15,8 @@ However, we will provide some examples of multiparameter models that
 must be estimated numerically at the end. <br/>
 
 ## Table of Contents
-- [Simple Multiparameter Models](#simple-multiparameter-models)
-  - [Normal Model](#normal-model)
-  - [Multinomial Model](#multinomial-model)
+- [Normal Model](#normal-model)
+- [Multinomial Model](#multinomial-model)
 - [Bioassay Experiment](#bioassay-experiment)
 - [Binomial Model with Unknown Probability and Sample
   Size](#binomial-model-with-unknown-probability-and-sample-size)
@@ -29,9 +29,7 @@ library(ggplot2)
 library(HDInterval)
 ```
 
-## Simple Multiparameter Models
-
-### Normal Model
+## Normal Model
 
 We will start with the simplest (and probably the most important)
 multiparameter model: the model for independent observations from a
@@ -562,7 +560,7 @@ The actual speed of light in air, $299702547 \text{ ms}^{-1}$, is not
 within these intervals; hence, we can speculate that Simon Newcomb’s
 measurements had some systematic errors.
 
-### Multinomial Model
+## Multinomial Model
 
 The second important multiparameter model that has a known analytic
 solution is the multinomial model for categorical data, which has
