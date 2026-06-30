@@ -26,7 +26,7 @@ that Bayesian inference handles hierarchical structure quite naturally. <br/>
   - [Selecting Sigma](#Selecting-Sigma)
 - [Hierarchical Normal Model with Known
   Variance](#hierarchical-normal-model-with-known-variance)
-- [SAT dataset](#sat-dataset)
+- [SAT Dataset](#sat-dataset)
 - [References](#references)
 
 ``` r
@@ -270,6 +270,7 @@ fit <- stan(
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-15-1.png)<!-- -->
+
 Similarly, by decreasing $\sigma$, the shift toward 0.5 becomes even
 more pronounced.
 
@@ -293,8 +294,9 @@ fit <- stan(
 )
 ```
 
-![](First_circle_3_files/figure-GFM/unnamed-chunk-17-1.png)<!-- --> The
-key takeaway is that with no pooling, we estimate the proportions in
+![](First_circle_3_files/figure-GFM/unnamed-chunk-17-1.png)<!-- --> 
+
+The key takeaway is that with no pooling, we estimate the proportions in
 each group independently of others. There are two major issues with this
 approach. First, since we are estimating independently within each
 group, we have significantly fewer observations to estimate $p$. We can
@@ -1059,7 +1061,7 @@ simple analytical solution is the one for $\tau$, which meets
 p(\tau \mid y) \propto p(\tau) V_\mu^{1/2}\prod_j(\sigma_j^2+\tau^2)^{-1/2}\exp\left(-\frac{( y_{\cdot j}- \hat\mu )^2}{2(\sigma_j^2+\tau^2)}\right) 
 ```
 
-## SAT dataset
+## SAT Dataset
 
 Let us apply the results from the previous chapter to the dataset that
 consists of estimated effects with no pooling (y corresponds to
