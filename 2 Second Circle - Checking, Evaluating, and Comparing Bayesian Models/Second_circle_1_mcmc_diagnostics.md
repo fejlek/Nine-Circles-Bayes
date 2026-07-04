@@ -290,7 +290,9 @@ MCMC algorithm can be written as follows (Gelman et al. 1995).
     2.  Simulate Hamiltonian system $(\theta, \phi)$ from
         $(\theta_{t-1}, \phi)$ to some $(\theta^*, \phi^*)$
     3.  Accept $\theta_t = \theta^*$ with probability
-        $\min(1, \text{exp}(\mathcal{H}(\theta_{t-1}, \phi) - \mathcal{H}(\theta^*, -\phi^*)))$
+        ``` math
+        \min(1, \text{exp}(\mathcal{H}(\theta_{t-1}, \phi) - \mathcal{H}(\theta^*, -\phi^*)))
+        ```
 
 One might be surprised by the inclusion of the acceptance step from the
 Metropolis Algorithm, since the evolution of the Hamiltonian equations
