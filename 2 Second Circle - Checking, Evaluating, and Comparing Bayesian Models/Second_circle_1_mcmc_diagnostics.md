@@ -288,12 +288,12 @@ MCMC algorithm can be written as follows (Gelman et al. 1995).
 2.  For $t = 1, 2, \ldots$ do
     1.  Randomly draw $\phi$ from $\pi(p \mid q)$
     2.  Simulate Hamiltonian system $(\theta, \phi)$ from
-        $(\theta_{t-1}, \phi)$ to some $(\theta^*, \phi^*)$
-    3.  Accept $\theta_t = \theta^*$ with probability
+        $(\theta_{t-1}, \phi)$ to some $(\theta^\star, \phi^\star)$
+    3.  Accept $\theta_t = \theta^\star$ with probability
         
 
 ``` math
-\min(1, \text{exp}(\mathcal{H}(\theta_{t-1}, \phi) - \mathcal{H}(\theta^*, -\phi^*)))
+\min(1, \text{exp}(\mathcal{H}(\theta_{t-1}, \phi) - \mathcal{H}(\theta^*, -\phi^\star)))
 ```
 
 <br/> One might be surprised by the inclusion of the acceptance step from the Metropolis Algorithm, since the evolution of the Hamiltonian equations
@@ -304,7 +304,7 @@ errors. The random acceptance, thence, serves as a correction for the
 bias caused by the integrator. We can also notice that the sign for the
 momentum in $\mathcal{H}(\theta^, -\phi^)$ is opposite. This is because
 the denominator in the acceptance ratio
-$r = \frac{J(\theta_{t-1} \mid \theta^)p(\theta^)}{J(\theta^* \mid \theta_{t-1})p(\theta_{t-1})}$
+$r = \frac{J(\theta_{t-1} \mid \theta^)p(\theta^)}{J(\theta^\star \mid \theta_{t-1})p(\theta_{t-1})}$
 corresponds to the probability of the “reverse” jump, and to make the
 reverse jump in Hamiltonian dynamics, we have to a reverse the direction
 of the momentum (Betancourt 2017).
