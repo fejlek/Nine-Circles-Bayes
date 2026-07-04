@@ -1179,6 +1179,8 @@ image is from
 <https://brendanhasz.github.io/2018/11/15/hmm-vs-gp-part2.html>). Such
 sharp funnels are very hard to explore for the MCMC algorithms.
 
+![](Second_circle_1_files/figure-GFM/funnel.jpg)<!-- -->
+
 The simple fix is to use the non-centered parametrization instead, in
 which we no longer sample $\theta_i$ directly.
 
