@@ -785,8 +785,8 @@ $p(\theta \mid y)$ to better approximate the estimate of leave-one-out
 posterior $p(\theta \mid y{[-i]})$. Specifically, the algorithm computes
 the weights $w_i^s$ and computes $k$. Provided that $k$ is too large, it
 uses $w_i^s$ to compute transformed posterior samples
-$\theta^*_1, \ldots, \theta^*_S$. Next, it recomputes posterior densities
-$p(\theta^* \mid y)$ and $p(y \mid \theta^*)$. Lastly, it computes new
+$\theta^\star_1, \ldots, \theta^\star_S$. Next, it recomputes posterior densities
+$p(\theta^\star \mid y)$ and $p(y \mid \theta^\star)$. Lastly, it computes new
 weights and repeats the step.
 
 ``` r
