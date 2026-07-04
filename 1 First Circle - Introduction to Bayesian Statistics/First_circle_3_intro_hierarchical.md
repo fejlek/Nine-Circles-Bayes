@@ -612,7 +612,7 @@ Namely, importance sampling is based on the formula
 The point is to replace the computation of expectation wrt. $p$ (which
 is hard to sample, in our case $p(\theta \mid  y_{[-i]})$ ) by
 expectation wrt. $q$ (which is easy to sample, in our case
-$p(\theta \mid  y)$). Let’s assume that $y_1, \ldots, y_S$ are samples
+$p(\theta \mid  y)$ ). Let’s assume that $y_1, \ldots, y_S$ are samples
 from $q$. Then we can estimate $\mathbb{E}_q \left[f(Y) r(Y)\right]$ as
 
 ``` math
