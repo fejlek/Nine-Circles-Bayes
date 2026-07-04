@@ -18,7 +18,7 @@ Jiří Fejlek
     Plots](#trace-plots-rank-plots-ecdf-plots)
   - [ESS, Rhat](#ess-rhat)
 - [Hamiltonian MCMC diagnostics](#hamiltonian-mcmc-diagnostics)
-  - [Non-centered Parametrization](#non-centered-parametrization)
+- [Non-centered Parametrization](#non-centered-parametrization)
 - [Rat Tumor Dataset Revisited](#rat-tumor-dataset-revisited)
 - [References](#references)
 
