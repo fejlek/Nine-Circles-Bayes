@@ -290,6 +290,7 @@ MCMC algorithm can be written as follows (Gelman et al. 1995).
     2.  Simulate Hamiltonian system $(\theta, \phi)$ from
         $(\theta_{t-1}, \phi)$ to some $(\theta^*, \phi^*)$
     3.  Accept $\theta_t = \theta^*$ with probability
+        
         ``` math
         \min(1, \text{exp}(\mathcal{H}(\theta_{t-1}, \phi) - \mathcal{H}(\theta^*, -\phi^*)))
         ```
