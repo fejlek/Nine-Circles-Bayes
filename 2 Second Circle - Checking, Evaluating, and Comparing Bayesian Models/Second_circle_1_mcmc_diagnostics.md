@@ -7,6 +7,15 @@ Jiří Fejlek
 2026-07-04
 <br/>
 
+<br/> In the previous circle, we learned the fundamentals of Bayesian modeling. 
+We now know how to define a simple Bayesian model and fit it to a given dataset 
+using Stan. However, as with any other modeling technique, we always need to ensure 
+that the model we  construct is appropriate for the dataset. In this first part, we 
+will focus on diagnostics of the output from the Markov Chain Monte Carlo methods we 
+used to obtain the samples from the posterior density. It is therefore crucial to 
+ensure that these samples are truly representative of the posterior to make sense of 
+any further inference. 
+
 ## Table of Contents
 
 - [Markov Chain Monte Carlo](#markov-chain-monte-carlo)
