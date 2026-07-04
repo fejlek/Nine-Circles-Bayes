@@ -1159,7 +1159,7 @@ We observe that all divergences occurred for values of $\sigma_1$ close
 to zero. Overall, we conclude that our Hamiltonian MCMC chains are not
 reliable and, hence, should not be used for inference.
 
-### Non-centered Parametrization
+## Non-centered Parametrization
 
 Well, it turned out that the posterior samples were actually quite bad.
 Fortunately, what we observed is a a common behavior of hierarchical
