@@ -78,18 +78,18 @@ The Metropolis algorithm has the following steps (Gelman et al. 1995).
 
 1.  Select an initial $\theta_0$ for which $p(\theta_0) >0$
 2.  For $t = 1, 2, \ldots$ do
-    1.  Sample a proposal $\theta^*$ from the jumping distribution
+    1.  Sample a proposal $\theta^\star$ from the jumping distribution
         $J(\theta \mid \theta_{t-1})$
     2.  Calculate an *acceptance ratio*
         $r = p(\theta^*)/p(\theta_{t-1})$
-    3.  Set $\theta_t = \theta^*$ with probability $\min(r,1)$,
+    3.  Set $\theta_t = \theta^\star$ with probability $\min(r,1)$,
         otherwise set $\theta_t = \theta_{t-1}$
 
 We should note that we can generalize to a non-symmetric jumping
 distribution $J$ by modifying the acceptance ratio as
 
 ``` math
-r = \frac{J(\theta_{t-1} \mid \theta^*)p(\theta^*)}{J(\theta^* \mid \theta_{t-1})p(\theta_{t-1})}.
+r = \frac{J(\theta_{t-1} \mid \theta^\star)p(\theta^\star)}{J(\theta^\star \mid \theta_{t-1})p(\theta_{t-1})}.
 ```
 
 To illustrate that the Metropolis Algorithm works, we will implement a
@@ -139,7 +139,7 @@ distribution.
 
 One important thing to notice is that the Metropolis Algorithm depends
 on $p(\theta)$ only through acceptance ratio
-$p(\theta^*)/p(\theta_{t-1})$, i.e., we do not need to know the correct
+$p(\theta^\star)/p(\theta_{t-1})$, i.e., we do not need to know the correct
 normalization to sample from $p(\theta)$. This is what we need for
 Bayesian modeling! So what’s the issue with the Metropolis Algorithm?
 Well, the main issue is that the Metropolis Algorithm samples from a
@@ -171,7 +171,7 @@ curve(dbeta(x, 12, 2, ncp = 0, log = FALSE), from = 0, to = 1,
 
 ![](Second_circle_1_files/figure-GFM/unnamed-chunk-5-1.png)<!-- -->
 
-If the “step” *proposal_sd *is too large, the majority of the proposals
+If the “step” *proposal_sd* is too large, the majority of the proposals
 are outside of the typical values of the density, and they will be
 rejected, and the sampling algorithm stands still. For small steps, the
 samples will generally be accepted, but subsequent samples will be
@@ -293,7 +293,7 @@ MCMC algorithm can be written as follows (Gelman et al. 1995).
         
 
 ``` math
-\min(1, \text{exp}(\mathcal{H}(\theta_{t-1}, \phi) - \mathcal{H}(\theta^*, -\phi^\star)))
+\min(1, \text{exp}(\mathcal{H}(\theta_{t-1}, \phi) - \mathcal{H}(\theta^\star, -\phi^\star)))
 ```
 
 <br/> One might be surprised by the inclusion of the acceptance step from the Metropolis Algorithm, since the evolution of the Hamiltonian equations
@@ -302,9 +302,8 @@ should always be 1. However, the Hamiltonian system must be integrated
 numerically in practice, and hence, there will be some integration
 errors. The random acceptance, thence, serves as a correction for the
 bias caused by the integrator. We can also notice that the sign for the
-momentum in $\mathcal{H}(\theta^, -\phi^)$ is opposite. This is because
-the denominator in the acceptance ratio
-$r = \frac{J(\theta_{t-1} \mid \theta^)p(\theta^)}{J(\theta^\star \mid \theta_{t-1})p(\theta_{t-1})}$
+momentum in $\mathcal{H}(\theta^\star, -\phi^\star)$ is opposite. This is because the denominator in the acceptance ratio
+$r = \frac{J(\theta_{t-1} \mid \theta^\star)p(\theta^\star)}{J(\theta^\star \mid \theta_{t-1})p(\theta_{t-1})}$
 corresponds to the probability of the “reverse” jump, and to make the
 reverse jump in Hamiltonian dynamics, we have to a reverse the direction
 of the momentum (Betancourt 2017).
