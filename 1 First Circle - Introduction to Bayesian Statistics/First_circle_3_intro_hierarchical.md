@@ -24,6 +24,10 @@ that Bayesian inference handles hierarchical structure quite naturally. <br/>
   - [No Pooling](#no-pooling)
   - [Partial Pooling](#partial-pooling)
   - [Selecting Sigma](#Selecting-Sigma)
+    -[Pareto Smoothed Importance Sampling](#pareto-smoothed-importance-sampling)
+    -[Performing PSIS in R](#performing-psis-in-r)
+    -[Diagnostics of PSIS](#diagnostics-of-psis)
+    -[Estimating Sigma by Setting Its Prior](#estimating-sigma-by-setting-its-prior)
 - [Hierarchical Normal Model with Known
   Variance](#hierarchical-normal-model-with-known-variance)
 - [SAT Dataset](#sat-dataset)
@@ -872,7 +876,7 @@ We notice that the minimum is still at 0.8, but the shape of the minimum
 is less pronounced, since the *looic* scores for larger $\sigma_1$ are
 underestimated.
 
-#### Estimating $\sigma_1$ by setting its prior
+#### Estimating Sigma by Setting Its Prior
 
 Let us try a different, model-based approach. We will now consider
 $\sigma_1$ as another parameter to estimate with its own prior. In the
