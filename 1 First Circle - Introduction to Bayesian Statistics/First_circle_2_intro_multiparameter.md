@@ -571,7 +571,7 @@ likelihood (Gelman et al. 1995)
 p(y \mid  \theta) \propto \prod_j \theta_j^{y_j},
 ```
 
-where $theta_j$ is the probability of $j$th category and $y_j$ is the
+where $\theta_j$ is the probability of $j$ th category and $y_j$ is the
 observed count. The conjugate prior for the multinomial model is
 
 ``` math
@@ -710,8 +710,7 @@ summary(logit_model)
     ## 
     ## Number of Fisher Scoring iterations: 7
 
-The Bayesian logistic model with normal priors we will fit is as
-follows.
+We will fit the Bayesian logistic model with normal priors as follows.
 
 ``` default
 data {
