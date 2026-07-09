@@ -2017,7 +2017,7 @@ We get the following model.
 
 ``` math
 \begin{align*}
-\text{logit }p &= \alpha + \beta \cdot t\\
+\text{logit }p &= \alpha + \alpha_{\text{Dog}} + \beta \cdot t\\
 \\
 &\text{Population Level:}\\
 \alpha &\sim \mathrm{Student}_3(0, 2.5)\\
