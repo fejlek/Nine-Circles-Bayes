@@ -35,27 +35,6 @@ Bayesian models with tools for model checking.
   - [Posterior Predictive Checking](#posterior-predictive-checking-2)
 - [References](#references)
 
-- [Model Checking](#model-checking)
-- [Discrepancy Measures](#discrepancy-measures)
-- [Probability Integral Transform (PIT)
-  Values](#probability-integral-transform-pit-values)
-- [Measurements of the Speed of Light
-  Revisited](#measurements-of-the-speed-of-light-revisited)
-- [Primate Milk Dataset](#primate-milk-dataset)
-  - [MCMC diagnostics](#mcmc-diagnostics)
-  - [Prior Sensitivity Analysis](#prior-sensitivity-analysis)
-  - [Posterior Predictive Checking](#posterior-predictive-checking)
-- [Sleep Study Dataset](#sleep-study-dataset)
-  - [MCMC diagnostics](#mcmc-diagnostics-1)
-  - [Prior Sensitivity Analysis](#prior-sensitivity-analysis-1)
-  - [Posterior Predictive Checking](#posterior-predictive-checking-1)
-- [Stochastic Learning in Dogs
-  Dataset](#stochastic-learning-in-dogs-dataset)
-  - [MCMC diagnostics](#mcmc-diagnostics-2)
-  - [Prior Sensitivity Analysis](#prior-sensitivity-analysis-2)
-  - [Posterior Predictive Checking](#posterior-predictive-checking-2)
-- [References](#references)
-
 ``` r
 library(tidyr)
 library(rstan)
