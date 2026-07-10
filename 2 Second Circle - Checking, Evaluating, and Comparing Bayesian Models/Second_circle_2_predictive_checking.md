@@ -35,6 +35,27 @@ Bayesian models with tools for model checking.
   - [Posterior Predictive Checking](#posterior-predictive-checking-2)
 - [References](#references)
 
+- [Model Checking](#model-checking)
+- [Discrepancy Measures](#discrepancy-measures)
+- [Probability Integral Transform (PIT)
+  Values](#probability-integral-transform-pit-values)
+- [Measurements of the Speed of Light
+  Revisited](#measurements-of-the-speed-of-light-revisited)
+- [Primate Milk Dataset](#primate-milk-dataset)
+  - [MCMC diagnostics](#mcmc-diagnostics)
+  - [Prior Sensitivity Analysis](#prior-sensitivity-analysis)
+  - [Posterior Predictive Checking](#posterior-predictive-checking)
+- [Sleep Study Dataset](#sleep-study-dataset)
+  - [MCMC diagnostics](#mcmc-diagnostics-1)
+  - [Prior Sensitivity Analysis](#prior-sensitivity-analysis-1)
+  - [Posterior Predictive Checking](#posterior-predictive-checking-1)
+- [Stochastic Learning in Dogs
+  Dataset](#stochastic-learning-in-dogs-dataset)
+  - [MCMC diagnostics](#mcmc-diagnostics-2)
+  - [Prior Sensitivity Analysis](#prior-sensitivity-analysis-2)
+  - [Posterior Predictive Checking](#posterior-predictive-checking-2)
+- [References](#references)
+
 ``` r
 library(tidyr)
 library(rstan)
@@ -48,6 +69,10 @@ color_scheme_set("brewer-Spectral")
 ```
 
 ## Model Checking
+
+We will continue the Second Circle dedicated to the diagnostics of
+Bayesian models with tools for model checking.  
+\## Posterior Predictive Checking
 
 The basic tool for checking the fit of a Bayesian model is to test
 whether the data generated from the posterior are similar to the
@@ -1159,24 +1184,24 @@ We can extract posterior residuals as follows.
 residuals(milk_lr, summary = TRUE)
 ```
 
-    ##            Estimate Est.Error       Q2.5      Q97.5
-    ##  [1,]  0.1018426553 0.1754351 -0.2360190 0.45870475
-    ##  [2,] -0.0839162439 0.1491265 -0.3675960 0.22342636
-    ##  [3,]  0.0048991129 0.1500517 -0.2857136 0.29836586
-    ##  [4,]  0.1770541950 0.1466752 -0.1114864 0.46562070
-    ##  [5,]  0.0472364337 0.1598370 -0.2766645 0.36057329
-    ##  [6,]  0.0425797080 0.1643573 -0.2877221 0.37692303
-    ##  [7,] -0.2477841840 0.1506101 -0.5480804 0.05750382
-    ##  [8,] -0.0003261128 0.1544974 -0.3132438 0.30807036
-    ##  [9,] -0.1519597460 0.1556263 -0.4554781 0.15529010
-    ## [10,]  0.2009171799 0.1479245 -0.1006021 0.48094870
-    ## [11,]  0.1187694308 0.1514447 -0.1848866 0.41557229
-    ## [12,] -0.0210539381 0.1493943 -0.3299335 0.26092190
-    ## [13,] -0.0231691355 0.1501640 -0.3157212 0.27960717
-    ## [14,] -0.0304409426 0.1601276 -0.3468885 0.28356801
-    ## [15,] -0.0404449461 0.1541549 -0.3616633 0.25811600
-    ## [16,] -0.1579494959 0.1570003 -0.4720566 0.15253143
-    ## [17,]  0.0665872732 0.1508202 -0.2375303 0.36742868
+    ##           Estimate Est.Error        Q2.5      Q97.5
+    ##  [1,]  0.101147170 0.1720854 -0.23006155 0.44211164
+    ##  [2,] -0.088376779 0.1485584 -0.37855427 0.20788576
+    ##  [3,]  0.007217101 0.1515965 -0.29540092 0.30802802
+    ##  [4,]  0.177105257 0.1476930 -0.10590279 0.47917069
+    ##  [5,]  0.044858906 0.1593777 -0.27668748 0.35389426
+    ##  [6,]  0.039159591 0.1569586 -0.28208776 0.35283024
+    ##  [7,] -0.245786765 0.1515491 -0.54844377 0.05105903
+    ##  [8,] -0.000978065 0.1554828 -0.31817628 0.30537373
+    ##  [9,] -0.145987939 0.1544410 -0.45662351 0.15899240
+    ## [10,]  0.203447431 0.1491960 -0.09338863 0.49811020
+    ## [11,]  0.118442081 0.1539266 -0.19255321 0.42842091
+    ## [12,] -0.020141637 0.1458572 -0.30558049 0.26702421
+    ## [13,] -0.020270095 0.1535122 -0.32565984 0.28184269
+    ## [14,] -0.029676694 0.1581462 -0.34155881 0.28727494
+    ## [15,] -0.036768961 0.1560769 -0.34711828 0.27473009
+    ## [16,] -0.161439375 0.1552663 -0.46760524 0.15598911
+    ## [17,]  0.072964397 0.1580097 -0.23474507 0.39698181
 
 Similar to PIT values, we can use Pareto Smoothed Importance Sampling to
 compute LOO (expected) posterior residuals.
@@ -1205,23 +1230,23 @@ quantiles_loo
 ```
 
     ##                q5       q95
-    ##  [1,] -0.09419813 0.6234291
-    ##  [2,]  0.31296916 0.8169707
-    ##  [3,]  0.29227114 0.8166521
-    ##  [4,]  0.46680277 0.9330093
-    ##  [5,]  0.58711719 1.1484295
-    ##  [6,]  0.47468966 1.0322448
-    ##  [7,]  0.54246543 0.9559423
-    ##  [8,]  0.43912480 0.9771210
-    ##  [9,]  0.60002052 1.1036493
-    ## [10,]  0.51767818 0.9686334
-    ## [11,]  0.44627012 0.9500110
-    ## [12,]  0.39941613 0.8882990
-    ## [13,]  0.28513267 0.8189988
-    ## [14,]  0.25457014 0.7943223
-    ## [15,]  0.25509220 0.7845005
-    ## [16,]  0.49222982 0.9837399
-    ## [17,]  0.35885327 0.8851732
+    ##  [1,] -0.09229347 0.6187314
+    ##  [2,]  0.31299214 0.8106118
+    ##  [3,]  0.30389089 0.8031672
+    ##  [4,]  0.46456174 0.9233929
+    ##  [5,]  0.59063144 1.1468308
+    ##  [6,]  0.47457810 1.0252669
+    ##  [7,]  0.54522526 0.9660032
+    ##  [8,]  0.44304491 0.9720811
+    ##  [9,]  0.61012023 1.1174100
+    ## [10,]  0.51210209 0.9717023
+    ## [11,]  0.45487732 0.9598050
+    ## [12,]  0.37995395 0.8917534
+    ## [13,]  0.30917861 0.8276051
+    ## [14,]  0.24630846 0.7994156
+    ## [15,]  0.25583526 0.7856245
+    ## [16,]  0.50467069 0.9968952
+    ## [17,]  0.36066414 0.8931009
 
 ## Sleep Study Dataset
 
@@ -1276,7 +1301,6 @@ sleepstudy
     ## 28  255.7511    7     310
     ## 29  261.0125    8     310
     ## 30  247.5153    9     310
-
 
 The dataset contains repeated measurements for particular subjects;
 hence, we need to use a hierarchical model. We will consider a *random
@@ -1534,9 +1558,9 @@ sleep_lr$criteria$loo
     ## Computed from 4000 by 144 log-likelihood matrix.
     ## 
     ##          Estimate   SE
-    ## elpd_loo   -693.8 22.2
-    ## p_loo        32.6  9.5
-    ## looic      1387.6 44.4
+    ## elpd_loo   -693.9 22.3
+    ## p_loo        32.8  9.6
+    ## looic      1387.9 44.7
     ## ------
     ## MCSE of elpd_loo is 0.6.
     ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.2]).
@@ -1659,7 +1683,7 @@ library(extraDistr)
 
 x <- seq(-200, 200, length.out = 200)
 y_norm <- dnorm(x, mean  = 0, sd = 26.09)
-y_t <- dlst(x, mu = 0, sigma = 12.26, df = 2.63)
+y_t <- dlst(x, mu = 0, sigma = 12.22, df = 2.62)
 
 ggplot() + geom_line(aes(x = x, y = y_t,colour="Student's Model"), linewidth = 1) + geom_line(aes(x = x, y = y_norm,colour="Normal Model"), linewidth = 1) + scale_color_manual(name = "Posterior of Errors", values = c("Student's Model" = "red", "Normal Model" = "blue"))
 ```
@@ -1667,7 +1691,8 @@ ggplot() + geom_line(aes(x = x, y = y_t,colour="Student's Model"), linewidth = 1
 ![](Second_circle_2_files/figure-GFM/unnamed-chunk-80-1.png)<!-- -->
 
 We observe that the shift to a Student’s distribution yielded a much
-narrower distribution of errors overall.
+narrower distribution of errors overall (the variance of the normal
+model is much more influenced by extreme observations).
 
 ``` r
 loo_fit <- loo(sleep_lr_student, save_psis = TRUE)
@@ -1869,8 +1894,22 @@ qqline(lood_ypred[,]-get_y(sleep_lr_student))
 
 ![](Second_circle_2_files/figure-GFM/unnamed-chunk-95-1.png)<!-- -->
 
-We observe that the residuals have a bit heavier tails indeed, and
-hence, Student’s t-distribution seems indeed more appropriate.
+We observe that the residuals indeed have a bit heavier tails, and
+hence, Student’s t-distribution seems more appropriate.
+
+``` r
+residuals_data <- data.frame(residuals = lood_ypred[,] -get_y(sleep_lr_student))
+ggplot(residuals_data, aes(sample = residuals)) +
+  stat_qq(distribution = qt, dparams = list(df = 2.62), color = "darkblue", size = 2) +
+  stat_qq_line(distribution = qt, dparams =  list(df = 2.62), color = "red", linewidth = 1) +
+  labs(
+    title = "Student's t-distribution Q-Q Plot",
+    x = "Theoretical Quantiles",
+    y = "Sample Quantiles"
+  ) 
+```
+
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-96-1.png)<!-- -->
 
 ## Stochastic Learning in Dogs Dataset
 
@@ -2121,7 +2160,7 @@ p4 <-mcmc_rank_overlay(as_draws_df(dog_logit), pars = 'lp__', n_bins  = 25)
 (p1 + p2 + p3 + p4) + plot_layout(ncol = 2)
 ```
 
-![](Second_circle_2_files/figure-GFM/unnamed-chunk-104-1.png)<!-- -->
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-105-1.png)<!-- -->
 
 ``` r
 p1 <- mcmc_rank_ecdf(as_draws_df(dog_logit), pars = 'b_Intercept',plot_diff = TRUE)
@@ -2131,7 +2170,7 @@ p4 <- mcmc_rank_ecdf(as_draws_df(dog_logit), pars = 'lp__',plot_diff = TRUE)
 (p1 + p2 + p3 + p4) + plot_layout(ncol = 2)
 ```
 
-![](Second_circle_2_files/figure-GFM/unnamed-chunk-105-1.png)<!-- -->
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-106-1.png)<!-- -->
 
 ``` r
 np <- nuts_params(dog_logit)
@@ -2141,7 +2180,7 @@ p2 <-mcmc_nuts_divergence(np, log_posterior(dog_logit))
 (p1 + p2) + plot_layout(ncol = 2)
 ```
 
-![](Second_circle_2_files/figure-GFM/unnamed-chunk-106-1.png)<!-- -->
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-107-1.png)<!-- -->
 
 ### Prior Sensitivity Analysis
 
@@ -2164,7 +2203,7 @@ powerscale_sensitivity(dog_logit, variable = c('b_Intercept', 'b_time', 'sd_dog_
 powerscale_plot_dens(dog_logit, variable = c('b_Intercept', 'b_time', 'sd_dog__Intercept'))
 ```
 
-![](Second_circle_2_files/figure-GFM/unnamed-chunk-108-1.png)<!-- -->
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-109-1.png)<!-- -->
 
 ### Posterior Predictive Checking
 
@@ -2185,7 +2224,7 @@ image(matrix(y_sim[2,], nrow = 10, byrow = TRUE), col = c("gray", "red"), axes =
 image(matrix(y_sim[3,], nrow = 10, byrow = TRUE), col = c("gray", "red"), axes = FALSE)
 ```
 
-![](Second_circle_2_files/figure-GFM/unnamed-chunk-110-1.png)<!-- -->
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-111-1.png)<!-- -->
 
 In addition, we can compute LOO predictions and perform similar
 diagnostics to those we used for frequentist logistic regression: split
@@ -2225,7 +2264,7 @@ plot_calib_0h <- autoplot(rd) +
 plot_calib_0h
 ```
 
-![](Second_circle_2_files/figure-GFM/unnamed-chunk-112-1.png)<!-- -->
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-113-1.png)<!-- -->
 
 However, we could also employ the tools we used for non-Bayesian
 logistic regression.
@@ -2236,7 +2275,7 @@ loo_ypred <- loo_epred(dog_logit)
 val.prob(loo_ypred[,],get_y(dog_logit))
 ```
 
-![](Second_circle_2_files/figure-GFM/unnamed-chunk-113-1.png)<!-- -->
+![](Second_circle_2_files/figure-GFM/unnamed-chunk-114-1.png)<!-- -->
 
     ##           Dxy       C (ROC)            R2             D      D:Chi-sq 
     ##   0.759708922   0.879854461   0.499712083   0.426345212 307.968552425 
