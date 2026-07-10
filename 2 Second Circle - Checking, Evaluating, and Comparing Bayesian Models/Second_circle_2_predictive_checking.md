@@ -1603,7 +1603,7 @@ Our model is now as follows.
 &\text{Population Level:}\\
 \alpha &\sim \text{Student}_3(303.2, 65.5)\\
 \beta & \sim 1\\
-\nu & \sim \text{Gamma}_{>1}(2, 0.1)\\
+\nu & \sim \text{Gamma}(2, 0.1)\\
 \sigma & \sim  \text{Half-Student}_3(0, 2.5)\\
 \\
 &\text{Group Level:}\\
