@@ -51,7 +51,6 @@ color_scheme_set("brewer-Spectral")
 
 We will continue the Second Circle dedicated to the diagnostics of
 Bayesian models with tools for model checking.  
-\## Posterior Predictive Checking
 
 The basic tool for checking the fit of a Bayesian model is to test
 whether the data generated from the posterior are similar to the
@@ -463,9 +462,10 @@ p4 <-ppc_loo_intervals(y, y_sim, psis_object = psis_object, prob = 0.75, prob_ou
 
 ![](Second_circle_2_files/figure-GFM/unnamed-chunk-23-1.png)<!-- -->
 
-We observe a notable discrepancy between LOO-PIT values and their
-expected uniform distribution (the figure contains several random
-simulations). Overall, our model diagnostics indicate that the normal
+We observe notable discrepancies between LOO-PIT values and their
+expected uniform distribution. 
+
+Overall, our model diagnostics indicate that the normal
 model is not appropriate for the dataset.
 
 ## Measurements of the Speed of Light Revisited
