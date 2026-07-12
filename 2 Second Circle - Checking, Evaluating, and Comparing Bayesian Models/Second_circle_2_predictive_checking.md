@@ -809,9 +809,12 @@ many frequentist models, we should be fine. We will use the *brms*
 package to fit the regression models, which allows us to do so without
 writing Stan code explicitly.
 
-We will fit the Bayesian linear regression as follows: we will specify a
-prior for the coefficient on log(mass) and let *brms* pick its default
-choices.
+We will fit the Bayesian linear regression as follows: we will consider 
+a linear model
+``` math
+\mathbb{E}\text{ neocortex.perc} = \alpha + \beta \cdot \text{log(mass)}
+```
+and we will specify a prior for the coefficient on log(mass) and let *brms* pick its default choices for the rest.
 
 ``` r
 library(brms)
