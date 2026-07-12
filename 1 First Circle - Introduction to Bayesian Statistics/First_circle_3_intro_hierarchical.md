@@ -562,11 +562,8 @@ unseen data.
 The principle of cross-validation of a Bayesian model is very similar to
 non-Bayesian ones. We split the data and fit a Bayesian model using the
 training sample $y$. Then we estimate the predictive performance by
-evaluating the model on the held-out sample $\tilde y$ by computing *log
-pointwise predictive density*
-$\text{LPPD} =  \sum_{\tilde y} \log \int p(\tilde y \mid \theta)p_\text{post}(\theta)\text{ d}\theta$
-(Gelman et al. 1995) ($p_\text{post}$ denotes the posterior density for
-$\theta$). We can then repeat the process for various splits.
+evaluating the model on the held-out sample $\tilde y$ by computing log
+predictive density $\sum_{\tilde y} \log \int p(\tilde y \mid \theta)p_\text{post}(\theta)\text{ d}\theta$ (Gelman et al. 1995), where $p_\text{post}$ denotes the posterior density for $\theta$. We can then repeat the process for various splits.
 
 Fitting Bayesian models is usually a bit more computationally expensive
 than the traditional regression models, and hence, the cross-validation
@@ -579,10 +576,10 @@ Pareto Smoothed Importance Sampling (PSIS)
 When performing a leave-one-out cross-validation, we are basically
 computing posterior estimates of $\theta$ with $y_i$ observation
 omitted: $p_\text{post}(\theta) = p(\theta \mid y_{[-i]})$ for each $i$,
-from which we can then compute LLPD (Gelman et al. 1995), i.e,
+from which we can then estimate *expected log pointwise predictive density (ELPD)* (Gelman et al. 1995)
 
 ``` math
-\text{LPPD}_\text{loo-cv} =  \sum_{i = 1}^n \log \int p(y_i \mid \theta) p(\theta \mid y_{[-i]})\text{ d}\theta
+\text{ELPD}_\text{loo-cv} =  \sum_{i = 1}^n \log \int p(y_i \mid \theta) p(\theta \mid y_{[-i]})\text{ d}\theta
 ```
 
 However, we can derive that
@@ -600,7 +597,7 @@ p(\theta \mid  y_{[-i]}) \propto \frac{p(\theta \mid y)}{p(y_i \mid \theta)}.
 Let us denote $w_i = \frac{1}{p(y_i \mid \theta)}$; these are known as
 the *importance weights*, because we can now use *importance sampling*
 (<https://en.wikipedia.org/wiki/Importance_sampling>) to estimate
-$\text{LPPD}_\text{loo-cv}$ using posterior samples
+$\text{ELPD}_\text{loo-cv}$ using posterior samples
 $\theta_1, \ldots, \theta_S$ from $p(\theta \mid y)$.
 
 Namely, importance sampling is based on the formula
@@ -639,7 +636,7 @@ likely to have a smaller variance and thinner tails than
 $p(\theta \mid  y_{[-i]})$, which means that the importance weights
 $w_i = \frac{1}{p(y_i \mid \theta)}$ might be very large (their variance
 can be even infinite!), which can lead to a poor approximations of
-$\text{LPPD}_\text{loo-cv}$ (Vehtari, Gelman, and Gabry 2017).
+$\text{ELPD}_\text{loo-cv}$ (Vehtari, Gelman, and Gabry 2017).
 
 The solution proposed in (Vehtari et al. 2024) (Pareto Smoothed
 Importance Sampling or PSIS) fits a generalized Pareto distribution on
@@ -767,15 +764,15 @@ sampling. The value $k$ corresponds to the shape parameter of the
 generalized Pareto distribution fitted on the tails of the importance
 weights. For $k < 1/2$, the tails are light enough so that the variance
 of the raw importance ratios is finite, and hence the estimate of
-$\text{LPPD}\text{loo-cv}$ for a given observation should be accurate
+$\text{ELPD}\text{loo-cv}$ for a given observation should be accurate
 (Vehtari, Gelman, and Gabry 2017). Provided that $1/2 < k < 1$, the
 variance of importance weights is infinite, but the mean exists. Hence,
-the estimate of $\text{LPPD}\text{loo-cv}$ still converges, albeit more
+the estimate of $\text{ELPD}\text{loo-cv}$ still converges, albeit more
 slowly (performance is observed to be satisfactory for $k < 0.7$ in
 practice (Vehtari, Gelman, and Gabry 2017)). For $k>1$, importance
 weights do not even have a mean.
 
-The diagnostics indicate that the estimate of $\text{LPPD}\text{loo-cv}$
+The diagnostics indicate that the estimate of $\text{ELPD}\text{loo-cv}$
 for some observations might be inaccurate. To improve accuracy, *loo*
 also implements a moment matching correction
 (<https://cran.r-project.org/web/packages/loo/vignettes/loo2-moment-matching.html>),
