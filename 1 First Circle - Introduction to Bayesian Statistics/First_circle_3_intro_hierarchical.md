@@ -320,7 +320,7 @@ groups.
 
 In the no pooling model, we assumed a prior for each group on the
 probability logit $p_i/(1-p_i) \sim N(\mu, \sigma^2)$ and parameters of
-these priors $mu$, $\sigma^2$ were chosen and fixed for each prior (we
+these priors $\mu$, $\sigma^2$ were chosen and fixed for each prior (we
 picked the same values in each group). Now, let us assume instead that
 $\mu$ has its own prior. Hence, we get the following hierarchical
 structure.
