@@ -1362,7 +1362,7 @@ Q_{\alpha,\beta} & \sim \mathrm{LKJ}(1)
 \end{align*}
 ```
 
-We can split the model into a population level, which corresponds to
+We split the model into a population level, which corresponds to
 ordinary linear regression, and a group level (i.e., **Subject** level),
 which models the effect of each individual. The model corresponds to a
 *random effects model*, which we know from frequentist statistics, and
@@ -1428,6 +1428,32 @@ ggplot(data_long, aes(x = `LKJ Density`, fill = Eta)) +
 ```
 
 ![](Second_circle_2_files/figure-GFM/unnamed-chunk-70-1.png)<!-- -->
+
+
+We should note that the way we defined a hierarchical model is a bit different from our previous projects, in which we wrote, e.g., for the *Rat Tumor Dataset*,
+
+``` math
+\begin{align*}
+\text{logit}\frac{p_i}{1-p_i} & \sim N(\mu_i, \sigma^2)\\
+\mu_i & \sim N(0, 2.25)\\
+\sigma & \sim \text{Exp}(1)
+\end{align*}
+``` 
+
+However, these equations implies that $\text{logit}\frac{p_i}{1-p_i}\mid \sigma^2 \sim N(0,\sigma^2 + 2.25)$. Consequently, we can rewrite the model as
+
+``` math
+\begin{align*}
+\text{logit}\frac{p_i}{1-p_i} & = \alpha + \alpha_i\\
+\alpha & \sim N(0, 2.25)\\
+\alpha_i & \sim N(0,\sigma^2)\\
+\sigma & \sim \text{Exp}(1),
+\end{align*}
+``` 
+which is the form we used above for the Sleep Study Dataset. We can again interpret $\alpha$ as the population-level effect and $\alpha_i$ as the individual group effects, which vary with the parameter $\sigma$. Overall, both forms are equivalent. The first one probably better describes hierarchical aspects of the model, setting prior distributions on parameters of population-level priors. The second form better explains the pooling effect, how we split the explanation of the variability in the data into the population level effects and the group level effects.
+
+
+
 
 Let us check the results of the fit.
 
