@@ -16,14 +16,13 @@ standard regression approaches are often inappropriate. The reason we
 point out hierarchical models specifically in the Bayesian context is
 that Bayesian inference handles hierarchical structure quite naturally. <br/>
 
-
 ## Table of Contents
 
 - [Rat Tumor Dataset](#rat-tumor-dataset)
   - [Pooled model](#pooled-model)
   - [No Pooling](#no-pooling)
   - [Partial Pooling](#partial-pooling)
-  - [Selecting Sigma](#Selecting-Sigma)
+  - [Selecting Sigma](#selecting-sigma)
     - [Pareto Smoothed Importance Sampling](#pareto-smoothed-importance-sampling)
     - [Performing PSIS in R](#performing-psis-in-r)
     - [Diagnostics of PSIS](#diagnostics-of-psis)
@@ -298,7 +297,7 @@ fit <- stan(
 )
 ```
 
-![](First_circle_3_files/figure-GFM/unnamed-chunk-17-1.png)<!-- --> 
+![](First_circle_3_files/figure-GFM/unnamed-chunk-17-1.png)<!-- -->
 
 The key takeaway is that with no pooling, we estimate the proportions in
 each group independently of others. There are two major issues with this
@@ -327,14 +326,14 @@ structure.
 
 ``` math
 \begin{align*}
-p_i/(1-p_i) &\sim N(\mu_1, \sigma_1^2)\\
-\mu_1 & \sim N(\mu_2, \sigma_2^2)
+p_i/(1-p_i) &\sim N(\mu, \sigma^2)\\
+\mu & \sim N(\nu, \tau_2^2)
 \end{align*}
 ```
 
-Let us pick $\mu_2 = 0$ and $\sigma_2 = 1.5$ and have a look at how our
-estimates change depending on the value of $\sigma_1$. Let us start with
-a very small $\sigma_1$.
+Let us pick $\nu = 0$ and $\tau = 1.5$ and have a look at how our
+estimates change depending on the value of $\sigma$. Let us start with a
+very small $\sigma = 0.1$.
 
 ``` default
 data {
@@ -390,14 +389,14 @@ fit <- stan(
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-20-1.png)<!-- -->
 
-The result is very different from the case in which $\mu_1$ was a fixed
+The result is very different from the case in which $\mu$ was a fixed
 parameter. We observe that our estimates are very close to the overall
-mean. By setting $\sigma _1$ very small, we are assuming that all the
-probability logits $p_i/(1-p_i)$ are the same regardless of what $\mu_1$
+mean. By setting $\sigma$ very small, we are assuming that all the
+probability logits $p_i/(1-p_i)$ are the same regardless of what $\mu$
 is randomly drawn. In other words, groups do not matter, and hence, we
 are assuming a pooled model.
 
-We can also look at the posterior distribution of $\mu_1$, which is
+We can also look at the posterior distribution of $\mu$, which is
 concentrated on the value of the overall observed proportion.
 
 ``` r
@@ -405,7 +404,7 @@ logit_p_partial_pooled <- extract(fit)$mu
 
 dens <- density(ilogit(logit_p_partial_pooled))
 dens_data <- data.frame(x = dens$x, y = dens$y)
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu_1') + ylab('Posterior Density')
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu') + ylab('Posterior Density')
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-21-1.png)<!-- -->
@@ -432,7 +431,7 @@ ggplot(plot_data, aes(x = x, y = y, group = group, color = group)) +
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-22-1.png)<!-- -->
 
-Let us now choose a very large $\sigma_1$.
+Let us now choose a very large $\sigma = 10$.
 
 ``` r
 stan_data <- list(
@@ -458,17 +457,17 @@ fit <- stan(
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-24-1.png)<!-- -->
 
 Now, the estimates are very close to the observed proportions in each
-group; we got a model with almost no pooling. By setting $\sigma_1$
-large, we are assuming that $p_i/(1-p_i)$ varies a lot from group to
-group. Hence, the groups have almost nothing in common; $\mu_1$, which
-represents the “common part,” is almost zero.
+group; we got a model with almost no pooling. By setting $\sigma$ large,
+we are assuming that $p_i/(1-p_i)$ varies a lot from group to group.
+Hence, the groups have almost nothing in common; $\mu$, which represents
+the “common part,” is almost zero.
 
 ``` r
 logit_p_partial_pooled <- extract(fit)$mu
 
 dens <- density(ilogit(logit_p_partial_pooled))
 dens_data <- data.frame(x = dens$x, y = dens$y)
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu_1') + ylab('Posterior Density')
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu') + ylab('Posterior Density')
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-25-1.png)<!-- -->
@@ -492,8 +491,8 @@ ggplot(plot_data, aes(x = x, y = y, group = group, color = group)) +
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-26-1.png)<!-- -->
 
-We do not need to pick only the extreme values of $\ sigma_1$. Let us
-pick a moderate value.
+We do not need to pick only the extreme values of $\sigma$. Let us pick
+a moderate value $\sigma = 0.5$.
 
 ``` r
 stan_data <- list(
@@ -519,7 +518,7 @@ fit <- stan(
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-28-1.png)<!-- -->
 
 The estimates still vary across groups, but they are pulled toward the
-mean. The common part $\mu_1$ is slightly smaller than the pooled
+mean. The common part $\mu$ is slightly smaller than the pooled
 estimate, but much larger than that of the model with almost no pooling.
 
 ``` r
@@ -527,7 +526,7 @@ logit_p_partial_pooled <- extract(fit)$mu
 
 dens <- density(ilogit(logit_p_partial_pooled))
 dens_data <- data.frame(x = dens$x, y = dens$y)
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu_1') + ylab('Posterior Density')
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu') + ylab('Posterior Density')
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-29-1.png)<!-- -->
@@ -553,7 +552,7 @@ ggplot(plot_data, aes(x = x, y = y, group = group, color = group)) +
 
 ### Selecting Sigma
 
-The next obvious question is how to choose $\sigma_1$: whether to prefer
+The next obvious question is how to choose $\sigma$: whether to prefer
 more pooling or less pooling. One method that is pretty universal and we
 used in the past to estimate such hyperparameter values is
 cross-validation, which estimates a model’s predictive performance on
@@ -563,7 +562,10 @@ The principle of cross-validation of a Bayesian model is very similar to
 non-Bayesian ones. We split the data and fit a Bayesian model using the
 training sample $y$. Then we estimate the predictive performance by
 evaluating the model on the held-out sample $\tilde y$ by computing log
-predictive density $\sum_{\tilde y} \log \int p(\tilde y \mid \theta)p_\text{post}(\theta)\text{ d}\theta$ (Gelman et al. 1995), where $p_\text{post}$ denotes the posterior density for $\theta$. We can then repeat the process for various splits.
+predictive density
+$\sum_{\tilde y} \log \int p(\tilde y \mid \theta)p_\text{post}(\theta)\text{ d}\theta$
+(Gelman et al. 1995), where $p_\text{post}$ denotes the posterior
+density for $\theta$. We can then repeat the process for various splits.
 
 Fitting Bayesian models is usually a bit more computationally expensive
 than the traditional regression models, and hence, the cross-validation
@@ -576,7 +578,8 @@ Pareto Smoothed Importance Sampling (PSIS)
 When performing a leave-one-out cross-validation, we are basically
 computing posterior estimates of $\theta$ with $y_i$ observation
 omitted: $p_\text{post}(\theta) = p(\theta \mid y_{[-i]})$ for each $i$,
-from which we can then estimate *expected log pointwise predictive density (ELPD)* (Gelman et al. 1995)
+from which we can then estimate *expected log pointwise predictive
+density (ELPD)* (Gelman et al. 1995)
 
 ``` math
 \text{ELPD}_\text{loo-cv} =  \sum_{i = 1}^n \log \int p(y_i \mid \theta) p(\theta \mid y_{[-i]})\text{ d}\theta
@@ -607,9 +610,9 @@ Namely, importance sampling is based on the formula
 ```
 
 The point is to replace the computation of expectation wrt. $p$ (which
-is hard to sample, in our case $p(\theta \mid  y_{[-i]})$ ) by
+is hard to sample, in our case $p(\theta \mid  y_{[-i]})$) by
 expectation wrt. $q$ (which is easy to sample, in our case
-$p(\theta \mid  y)$ ). Let’s assume that $y_1, \ldots, y_S$ are samples
+$p(\theta \mid  y)$). Let’s assume that $y_1, \ldots, y_S$ are samples
 from $q$. Then we can estimate $\mathbb{E}_q \left[f(Y) r(Y)\right]$ as
 
 ``` math
@@ -650,8 +653,8 @@ the Pareto model (which are then also truncated).
 
 #### Performing PSIS in R
 
-We can compute PSIS in R as follows. First, we need to modify the
-Stan code slightly to explicitly save the log-likelihood values for MCMC
+We can perform PSIS in R as follows. First, we need to modify the Stan
+code slightly to explicitly save the log-likelihood values for MCMC
 samples.
 
 ``` default
@@ -779,10 +782,10 @@ also implements a moment matching correction
 which is based on (Paananen et al. 2021). The idea is to apply a moment
 matching algorithm that iteratively adjusts the posterior draws from
 $p(\theta \mid y)$ to better approximate the estimate of leave-one-out
-posterior $p(\theta \mid y{[-i]})$. Specifically, the algorithm computes
+posterior $p(\theta \mid y_{[-i]})$. Specifically, the algorithm computes
 the weights $w_i^s$ and computes $k$. Provided that $k$ is too large, it
 uses $w_i^s$ to compute transformed posterior samples
-$\theta^\star_1, \ldots, \theta^\star_S$. Next, it recomputes posterior densities
+$\theta^\star_1 \ldots, \theta^\star_S$. Next, it recomputes posterior densities
 $p(\theta^\star \mid y)$ and $p(y \mid \theta^\star)$. Lastly, it computes new
 weights and repeats the step.
 
@@ -804,8 +807,8 @@ loo_moment_match(fit, loo_fit)
     ## All Pareto k estimates are good (k < 0.7).
     ## See help('pareto-k-diagnostic') for details.
 
-The diagnostics indicate no further problems. Let us use the PSIS
-to compare models with various values of $\sigma_1$.
+The diagnostics indicate no further problems. Let us use the PSIS to
+compare models with various values of $\sigma$.
 
 ``` r
 sigmas <- c(0.1, 0.25, 0.5, 0.8, 1, 1.2, 1.5, 2, 3)
@@ -842,7 +845,7 @@ for (i in 1:length(sigmas)) {
 ```
 
 ``` r
-plot(sigmas, loo_scores, xlab = 'sigma',  ylab = 'looic')
+plot(sigmas, loo_scores, xlab = 'Sigma',  ylab = 'looic')
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-36-1.png)<!-- -->
@@ -853,12 +856,12 @@ sigmas[which.min(loo_scores)]
 
     ## [1] 0.8
 
-We observe that optimal $\sigma_1$ wrt. *looic* scores are around 0.8.
-Let’s also check, for comparison, the *looic* scores without a moment
-matching correction.
+We observe that optimal $\sigma$ wrt. *looic* are around 0.8. Let’s also
+check, for comparison, the *looic* scores without a moment matching
+correction.
 
 ``` r
-plot(sigmas, loo_scores_no_matching, xlab = 'sigma',  ylab = 'looic')
+plot(sigmas, loo_scores_no_matching, xlab = 'Sigma',  ylab = 'looic')
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-38-1.png)<!-- -->
@@ -870,14 +873,23 @@ sigmas[which.min(loo_scores_no_matching)]
     ## [1] 0.8
 
 We notice that the minimum is still at 0.8, but the shape of the minimum
-is less pronounced, since the *looic* scores for larger $\sigma_1$ are
+is less pronounced, since the *looic* scores for larger $\sigma$ are
 underestimated.
 
 #### Estimating Sigma by Setting Its Prior
 
 Let us try a different, model-based approach. We will now consider
-$\sigma_1$ as another parameter to estimate with its own prior. In the
-following implementation, we will use an exponential distribution.
+$\sigma$ as another parameter to estimate with its own prior. In the
+implementation, we will use an exponential distribution with the rate 1,
+i.e., we will consider the following hierarchical model
+
+``` math
+\begin{align*}
+p_i/(1-p_i) &\sim N(\mu, \sigma^2)\\
+\mu & \sim N(0, 2.25)\\
+\sigma & \sim \text{Exp}(1).
+\end{align*}
+```
 
 ``` default
 data {
@@ -936,7 +948,7 @@ sigma_logit <- extract(fit)$sigma_logit
 
 dens <- density(sigma_logit)
 dens_data <- data.frame(x = dens$x, y = dens$y)
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Sigma_1') + ylab('Posterior Density')
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Sigma') + ylab('Posterior Density')
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-42-1.png)<!-- -->
@@ -947,10 +959,10 @@ mean(sigma_logit)
 
     ## [1] 0.6929258
 
-We observe that we obtained a result quite similar to that based on PSIS. 
-Hence, we could save quite a bit of time and space by skipping
-PSIS/leave-one-out cross-validation. Still, it served a purpose
-as a validation tool of the obtained model. Plus, applications of
+We observe that we obtained a result quite similar to that based on
+PSIS. Hence, we could save quite a bit of time and space by skipping
+PSIS/leave-one-out cross-validation. Still, it served a purpose as a
+validation tool of our prior for $\sigma$. Plus, applications of
 cross-validation go way further; hence, we need to cover it sooner or
 later anyway.
 
@@ -963,7 +975,7 @@ logit_p_partial_pooled <- extract(fit)$mu
 
 dens <- density(ilogit(logit_p_partial_pooled))
 dens_data <- data.frame(x = dens$x, y = dens$y)
-ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu_1') + ylab('Posterior Density')
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Mu') + ylab('Posterior Density')
 ```
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-45-1.png)<!-- -->
@@ -1173,13 +1185,13 @@ quantile(mu_sample, c(0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95))
 ```
 
     ##         5%        10%        25%        50%        75%        90%        95% 
-    ## -0.5340809  1.3663346  4.3660994  7.6508746 10.9736384 14.0904254 15.9257813
+    ## -0.4666211  1.4662643  4.4261601  7.6734975 10.8696253 13.7997110 15.6472777
 
 ``` r
 mean(mu_sample)
 ```
 
-    ## [1] 7.692236
+    ## [1] 7.647687
 
 We observe that $\mu$ is most likely positive. Lastly, we need to sample
 $\theta_j\text{s}$ from $\theta_j \mid y, \tau, \mu$.
@@ -1220,22 +1232,22 @@ ggplot(plot_data, aes(x = x, y = y, group = group, color = group)) +
 apply(theta_sample, 2, function(x) quantile(x, c(0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95)))
 ```
 
-    ##               A          B         C          D         E         F          G
-    ## 5%  -0.04554279 -2.4687751 -7.528867 -3.2097446 -6.314054 -5.654951  0.6399872
-    ## 10%  2.20239411  0.1061624 -3.502470 -0.4703367 -3.233473 -2.334331  2.6124192
-    ## 25%  5.89122435  3.9237123  1.708064  3.4752590  1.222991  2.254052  5.9705286
-    ## 50% 10.14588678  7.7837237  6.499365  7.4689157  5.433422  6.440099  9.8816652
-    ## 75% 15.28541401 11.7137589 10.821186 11.6030301  9.295532 10.439315 14.3569577
-    ## 90% 21.92802496 15.5155238 14.819929 15.5982304 12.515415 13.923512 19.0944059
-    ## 95% 26.68817333 18.0111919 17.681955 18.1300431 14.677056 16.308414 22.2220642
+    ##             A           B         C          D         E         F          G
+    ## 5%  -0.273283 -2.31236264 -7.761852 -3.3038188 -6.292744 -5.812061  0.6688407
+    ## 10%  2.170059  0.09435988 -3.717763 -0.6091051 -3.261132 -2.552505  2.7366455
+    ## 25%  5.963214  3.80755609  1.844707  3.5561485  1.207596  2.134824  6.0754177
+    ## 50% 10.095046  7.68620943  6.695558  7.6134040  5.484637  6.455601  9.9902211
+    ## 75% 15.065753 11.59403490 10.786045 11.5726102  9.384947 10.460357 14.3037221
+    ## 90% 21.706303 15.31222217 14.686387 15.4331612 12.532713 13.971621 19.2693635
+    ## 95% 26.313317 17.95341778 17.516677 18.0200041 14.413217 16.289200 22.6751310
     ##              H
-    ## 5%  -4.2130802
-    ## 10% -0.7674147
-    ## 25%  3.6927975
-    ## 50%  7.9990608
-    ## 75% 12.5530139
-    ## 90% 17.5978761
-    ## 95% 21.3356437
+    ## 5%  -3.8036227
+    ## 10% -0.6844647
+    ## 25%  3.7791306
+    ## 50%  8.0181833
+    ## 75% 12.4279241
+    ## 90% 17.2771481
+    ## 95% 21.1368256
 
 We observe that our partial pooling model is quite close to the pooling
 model. So we would conclude that the effect of coaching programs seems
