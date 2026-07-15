@@ -432,7 +432,7 @@ ggplot(plot_data, aes(x = x, y = y, group = group, color = group)) +
 
 ![](First_circle_3_files/figure-GFM/unnamed-chunk-22-1.png)<!-- -->
 
-Let us now choose a very large $\ sigma_1$.
+Let us now choose a very large $\sigma_1$.
 
 ``` r
 stan_data <- list(
