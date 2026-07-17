@@ -8,8 +8,8 @@ Jiří Fejlek
 <br/>
 
 
-We will continue the Second Circle dedicated to the diagnostics of
-Bayesian models with tools for model checking.  
+<br/> We will continue the Second Circle dedicated to the diagnostics of
+Bayesian models with tools for model checking. <br/> 
 
 
 ## Table of Contents

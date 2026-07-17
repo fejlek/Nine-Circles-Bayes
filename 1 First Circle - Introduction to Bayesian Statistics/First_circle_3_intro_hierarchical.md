@@ -327,7 +327,7 @@ structure.
 ``` math
 \begin{align*}
 p_i/(1-p_i) &\sim N(\mu, \sigma^2)\\
-\mu & \sim N(\nu, \tau_2^2)
+\mu & \sim N(\nu, \tau^2)
 \end{align*}
 ```
 
