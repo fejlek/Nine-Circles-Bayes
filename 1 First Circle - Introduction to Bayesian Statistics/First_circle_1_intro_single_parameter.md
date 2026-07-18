@@ -64,8 +64,7 @@ bootstrap methods to generate “new datasets” in cases where the sampling
 distribution of $\hat \theta$ could not be easily approximated using
 large-sample asymptotics.
 
-As we observe from our three main steps, Bayesian inference requires
-specification of the full probability model $p(y, \theta)$, which
+As we observe from the three main steps of the Bayesian framework, Bayesian inference requires specification of the full probability model $p(y, \theta)$, which
 necessitates the definition of *prior probability* $p(\theta)$, which is
 used to model our initial knowledge about the parameters $\theta$ before
 we perform the inference. Using the observed data $y$, we can then
