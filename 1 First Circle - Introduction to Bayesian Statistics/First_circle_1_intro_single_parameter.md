@@ -52,7 +52,9 @@ probability $p(y\mid\theta)$ is referred to as the *likelihood*.
 The first step of frequentist inference is to estimate $\theta$ using
 some estimator $\hat \theta$ based on the observed data
 $y_1, \ldots, y_N$, for example, the maximum likelihood estimator (MLE)
-$\hat \theta = \text{argmax}\theta \Pi{i = 1}^n \text{ } p(y_i\mid \theta)$.
+
+$$\hat \theta = \text{argmax}_\theta \prod_{i = 1}^n \text{ } p(y_i\mid \theta).$$
+
 The next step consists of constructing *confidence intervals* and
 performing *hypothesis testing*, which are based on the *sampling*
 properties of $\hat \theta$; we asked how our estimator would vary if we
