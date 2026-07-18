@@ -103,7 +103,7 @@ p(y \mid \sigma^2) \propto (\sigma^2){^{-n/2}}\text{exp}\left(\frac{nv}{2\sigma^
 where $v = \frac{1}{n}\sum_i (y_i - \mu)^2$. In this form, we should
 recognize the distribution as gamma, but the variable is $1/\sigma^2$
 instead of $\sigma^2$. Thence, the conjugate prior for $\sigma^2$ is
-actually *inverse-gamma* (Gelman et al. 1995)
+actually known as *inverse-gamma* (Gelman et al. 1995)
 
 ``` math
 p(\sigma^2)  = \frac{\beta^\alpha}{\Gamma(\alpha)} (1/\sigma^2)^{\alpha+1}e^{-\beta/\sigma^2}.
