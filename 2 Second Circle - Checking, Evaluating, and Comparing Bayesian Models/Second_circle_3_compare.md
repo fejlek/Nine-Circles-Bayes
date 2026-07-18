@@ -1571,8 +1571,9 @@ cu_df |>
 
 ![](Second_circle_3_files/figure-GFM/unnamed-chunk-75-1.png)<!-- -->
 
-For the last week, we observed about 90% probability of a positive
-effect of the treatment. To observe a stronger effect, we can compare
+We observe that the effect of the treatment is probably positive: 
+for the last week,  probability is about 90%.  But, the effect seems
+fairly small. To observe a stronger effect, we can compare
 expected posterior predictions instead (which removes the variability
 caused by the beta-binomial model).
 
