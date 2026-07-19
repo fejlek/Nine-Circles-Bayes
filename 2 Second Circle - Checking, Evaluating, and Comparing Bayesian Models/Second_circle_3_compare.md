@@ -54,6 +54,10 @@ library(priorsense)
 color_scheme_set("brewer-Spectral")
 ```
 
+We conclude *Second Circle: Checking, Evaluating, and Comparing Bayesian
+Models* by comparing Bayesian models using estimates of their predictive
+accuracy on unseen data.
+
 ## Assessing Predictive Accuracy
 
 Let us assume a statistical model and a prediction of new observations
@@ -345,9 +349,9 @@ roaches_poisson$criteria$loo
     ## Computed from 4000 by 262 log-likelihood matrix.
     ## 
     ##          Estimate     SE
-    ## elpd_loo  -5496.4  705.3
-    ## p_loo       295.5   71.4
-    ## looic     10992.7 1410.6
+    ## elpd_loo  -5498.4  705.6
+    ## p_loo       297.5   72.3
+    ## looic     10996.8 1411.3
     ## ------
     ## MCSE of elpd_loo is 1.2.
     ## MCSE and ESS estimates assume independent draws (r_eff=1).
@@ -818,7 +822,7 @@ loo_compare(roaches_poisson, roaches_negbinom, roaches_hurdle_negbinom, roaches_
     ##  roaches_zeroinfl_negbinom       0.0     0.0      NA                    
     ##    roaches_hurdle_negbinom      -4.7     4.1    0.88                    
     ##           roaches_negbinom     -22.4     7.0    1.00                    
-    ##            roaches_poisson   -4636.6   686.2    1.00
+    ##            roaches_poisson   -4638.6   686.5    1.00
 
 We have obtained the same result.
 
@@ -1152,8 +1156,8 @@ for the same patient **id**; hence, we need to use a hierarchical model.
 
 ``` r
 fit_binomial <- brm(formula = cu | trials(set)  ~ cu_baseline + group*week + (1 | id),
-                    prior = c(prior(normal(0, 3), class = Intercept),
-                              prior(normal(0, 3), class = b)),
+                    prior = c(prior(normal(0, 1.5), class = Intercept),
+                              prior(normal(0, 1.5), class = b)),
                     data = cu_df, binomial(link = logit), refresh = 0, silent = 2, seed = 123)
 ```
 
@@ -1171,15 +1175,15 @@ summary(fit_binomial )
     ## Multilevel Hyperparameters:
     ## ~id (Number of levels: 105) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     4.32      0.45     3.54     5.24 1.00      742     1513
+    ## sd(Intercept)     4.31      0.44     3.54     5.27 1.00      688     1494
     ## 
     ## Regression Coefficients:
     ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept            -2.17      2.47    -6.89     2.64 1.01      382      950
-    ## cu_baseline           0.14      0.09    -0.05     0.32 1.00      340      851
-    ## groupplacebo          0.78      0.89    -1.07     2.47 1.01      316      517
-    ## week                 -0.17      0.02    -0.20    -0.13 1.00     3455     3273
-    ## groupplacebo:week     0.11      0.03     0.06     0.16 1.00     3082     3112
+    ## Intercept            -2.41      2.40    -7.24     2.17 1.01      379      573
+    ## cu_baseline           0.15      0.09    -0.03     0.33 1.01      349      607
+    ## groupplacebo          0.57      0.79    -0.94     2.11 1.02      317      688
+    ## week                 -0.17      0.02    -0.20    -0.13 1.00     3580     2887
+    ## groupplacebo:week     0.11      0.03     0.06     0.16 1.00     3543     3035
     ## 
     ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1196,18 +1200,18 @@ fit_binomial$criteria$loo
     ## Computed from 4000 by 257 log-likelihood matrix.
     ## 
     ##          Estimate    SE
-    ## elpd_loo   -727.4  63.1
-    ## p_loo       243.8  27.9
-    ## looic      1454.8 126.2
+    ## elpd_loo   -727.3  63.4
+    ## p_loo       244.4  28.4
+    ## looic      1454.7 126.7
     ## ------
     ## MCSE of elpd_loo is NA.
-    ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.4, 1.9]).
+    ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.3, 1.9]).
     ## 
     ## Pareto k diagnostic values:
     ##                          Count Pct.    Min. ESS
-    ## (-Inf, 0.7]   (good)     188   73.2%   94      
-    ##    (0.7, 1]   (bad)       48   18.7%   <NA>    
-    ##    (1, Inf)   (very bad)  21    8.2%   <NA>    
+    ## (-Inf, 0.7]   (good)     190   73.9%   55      
+    ##    (0.7, 1]   (bad)       50   19.5%   <NA>    
+    ##    (1, Inf)   (very bad)  17    6.6%   <NA>    
     ## See help('pareto-k-diagnostic') for details.
 
 We observe a lot of observations with $k>0.7$ (we specifically did not
@@ -1234,11 +1238,64 @@ is drawn from a beta distribution.
 
 ``` r
 fit_beta_binomial <- brm(formula = cu | trials(set)  ~ cu_baseline + group*week + (1 | id),
-                         prior = c(prior(normal(0, 3), class = Intercept), 
-                                   prior(normal(0, 3), class = b)),
+                         prior = c(prior(normal(0, 1.5), class = Intercept), 
+                                   prior(normal(0, 1.5), class = b)),
                          data = cu_df, beta_binomial(link = logit), save_pars = save_pars(all = TRUE), 
                          refresh = 0, silent = 2, seed = 123)
 ```
+
+``` r
+prior_summary(fit_beta_binomial)
+```
+
+    ##                 prior     class              coef group resp dpar nlpar lb ub
+    ##        normal(0, 1.5)         b                                              
+    ##        normal(0, 1.5)         b       cu_baseline                            
+    ##        normal(0, 1.5)         b      groupplacebo                            
+    ##        normal(0, 1.5)         b groupplacebo:week                            
+    ##        normal(0, 1.5)         b              week                            
+    ##        normal(0, 1.5) Intercept                                              
+    ##     gamma(0.01, 0.01)       phi                                          0   
+    ##  student_t(3, 0, 2.5)        sd                                          0   
+    ##  student_t(3, 0, 2.5)        sd                      id                  0   
+    ##  student_t(3, 0, 2.5)        sd         Intercept    id                  0   
+    ##  tag       source
+    ##              user
+    ##      (vectorized)
+    ##      (vectorized)
+    ##      (vectorized)
+    ##      (vectorized)
+    ##              user
+    ##           default
+    ##           default
+    ##      (vectorized)
+    ##      (vectorized)
+
+Overall, our model is as follows.
+
+``` math
+\begin{align*}
+N & \sim \text{Binomial}(28, p)\\
+p & \sim \text{Beta}(\mu\phi, (1-\mu)\phi) \\
+\text{logit }\mu &\sim X\beta + \text{id}\\
+
+\text{Regression Coefficients:}\\
+\beta_\text{intercept} & \sim N(0,1.5)\\
+\beta_\text{cu\_baseline} & \sim N(0,1.5)\\
+\beta_\text{placebo} & \sim N(0,1.5)\\
+\beta_\text{placebo:week} & \sim N(0,1.5)\\
+\beta_\text{week} & \sim N(0,1.5)\\
+
+\text{Random Effects:}\\
+\text{id} & \sim N(0, \sigma^2)\\
+\sigma & \sim \text{Half-Student}_3(0,2.5)\\
+
+\text{Overdisperison Parameter:}\\
+\phi & \sim \text{Gamma}(0.01,0.01)
+\end{align*}
+```
+
+Let us check the fit.
 
 ``` r
 summary(fit_beta_binomial)
@@ -1254,19 +1311,19 @@ summary(fit_beta_binomial)
     ## Multilevel Hyperparameters:
     ## ~id (Number of levels: 105) 
     ##               Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## sd(Intercept)     3.30      0.38     2.62     4.15 1.00      779     1436
+    ## sd(Intercept)     3.27      0.37     2.61     4.09 1.00      893     1448
     ## 
     ## Regression Coefficients:
     ##                   Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## Intercept            -1.75      1.84    -5.45     1.95 1.00      751     1368
-    ## cu_baseline           0.12      0.07    -0.02     0.26 1.00      725     1463
-    ## groupplacebo          0.45      0.82    -1.12     2.05 1.01      741     1626
-    ## week                 -0.15      0.04    -0.23    -0.07 1.00     3233     3187
-    ## groupplacebo:week     0.10      0.06    -0.02     0.21 1.00     3069     3154
+    ## Intercept            -1.70      1.85    -5.36     1.88 1.01      695     1023
+    ## cu_baseline           0.12      0.07    -0.02     0.26 1.01      600      924
+    ## groupplacebo          0.36      0.71    -0.98     1.78 1.00      859     1234
+    ## week                 -0.15      0.04    -0.23    -0.07 1.00     2319     2652
+    ## groupplacebo:week     0.10      0.06    -0.01     0.21 1.00     2043     2562
     ## 
     ## Further Distributional Parameters:
     ##     Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-    ## phi     3.60      0.67     2.46     5.04 1.00     2083     2630
+    ## phi     3.58      0.65     2.46     4.97 1.00     1963     2473
     ## 
     ## Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
     ## and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -1278,7 +1335,7 @@ We observe that ESS and Rhat are decent. Let us check the fit.
 pp_check(fit_beta_binomial, type = "bars", ndraws = 4000)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-60-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-61-1.png)<!-- -->
 
 We observe that the beta-binomial model performs much better. We perform
 LOO cross-validation next.
@@ -1291,18 +1348,18 @@ loo(fit_beta_binomial)
     ## Computed from 4000 by 257 log-likelihood matrix.
     ## 
     ##          Estimate   SE
-    ## elpd_loo   -529.6 27.9
-    ## p_loo        87.9  9.4
-    ## looic      1059.1 55.9
+    ## elpd_loo   -528.8 27.7
+    ## p_loo        86.8  9.1
+    ## looic      1057.6 55.4
     ## ------
     ## MCSE of elpd_loo is NA.
-    ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.3, 1.9]).
+    ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.3, 1.7]).
     ## 
     ## Pareto k diagnostic values:
     ##                          Count Pct.    Min. ESS
-    ## (-Inf, 0.7]   (good)     229   89.1%   135     
-    ##    (0.7, 1]   (bad)       25    9.7%   <NA>    
-    ##    (1, Inf)   (very bad)   3    1.2%   <NA>    
+    ## (-Inf, 0.7]   (good)     228   88.7%   74      
+    ##    (0.7, 1]   (bad)       27   10.5%   <NA>    
+    ##    (1, Inf)   (very bad)   2    0.8%   <NA>    
     ## See help('pareto-k-diagnostic') for details.
 
 We observe that there are still some observations with high Pareto
@@ -1319,12 +1376,12 @@ fit_beta_binomial$criteria$loo
     ## Computed from 4000 by 257 log-likelihood matrix.
     ## 
     ##          Estimate   SE
-    ## elpd_loo   -530.5 28.0
-    ## p_loo        88.9  9.8
-    ## looic      1061.1 56.0
+    ## elpd_loo   -528.2 27.8
+    ## p_loo        86.2  9.5
+    ## looic      1056.4 55.7
     ## ------
-    ## MCSE of elpd_loo is 0.6.
-    ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.3, 1.9]).
+    ## MCSE of elpd_loo is 0.5.
+    ## MCSE and ESS estimates assume MCMC draws (r_eff in [0.3, 1.7]).
     ## 
     ## All Pareto k estimates are good (k < 0.7).
     ## See help('pareto-k-diagnostic') for details.
@@ -1338,7 +1395,7 @@ loo_compare(fit_beta_binomial,fit_binomial)
 
     ##              model elpd_diff se_diff p_worse diag_diff       diag_elpd
     ##  fit_beta_binomial       0.0     0.0      NA                          
-    ##       fit_binomial    -196.9    45.7    1.00           69 k_psis > 0.7
+    ##       fit_binomial    -199.1    46.0    1.00           67 k_psis > 0.7
 
 We can also compare the model in terms of DIC and WAIC.
 
@@ -1359,7 +1416,7 @@ DIC_scores
 ```
 
     ##      binomial beta-binomial 
-    ##      1222.226      1098.180
+    ##      1221.148      1095.888
 
 ``` r
 fit_beta_binomial <- add_criterion(fit_beta_binomial, criterion = "waic")
@@ -1369,7 +1426,7 @@ loo_compare(fit_beta_binomial,fit_binomial, criterion = "waic")
 
     ##              model elpd_diff se_diff p_worse diag_diff diag_elpd
     ##  fit_beta_binomial       0.0     0.0      NA                    
-    ##       fit_binomial    -182.7    45.6    1.00
+    ##       fit_binomial    -185.2    46.5    1.00
 
 We observe that the beta-binomial model is clearly better.
 
@@ -1387,7 +1444,7 @@ p4 <-mcmc_rank_overlay(as_draws_df(fit_beta_binomial), pars = 'b_week', n_bins  
 (p1 + p2 + p3 + p4) + plot_layout(ncol = 2)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-66-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-67-1.png)<!-- -->
 
 ``` r
 p1 <-mcmc_rank_overlay(as_draws_df(fit_beta_binomial), pars = 'b_groupplacebo:week', n_bins  = 25)
@@ -1398,7 +1455,7 @@ p4 <-mcmc_rank_overlay(as_draws_df(fit_beta_binomial), pars = 'lp__', n_bins  = 
 (p1 + p2 + p3 + p4) + plot_layout(ncol = 2)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-67-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-68-1.png)<!-- -->
 
 ``` r
 np <- nuts_params(fit_beta_binomial)
@@ -1408,7 +1465,7 @@ p2 <-mcmc_nuts_divergence(np, log_posterior(fit_beta_binomial))
 (p1 + p2) + plot_layout(ncol = 2)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-68-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-69-1.png)<!-- -->
 
 Next, we will check the sensitivity with respect to priors.
 
@@ -1421,13 +1478,13 @@ powerscale_sensitivity(fit_beta_binomial, variable = variables(as_draws(fit_beta
     ## Likelihood selection: all data
     ## 
     ##             variable prior likelihood diagnosis
-    ##          b_Intercept 0.005      0.084         -
-    ##        b_cu_baseline 0.007      0.090         -
-    ##       b_groupplacebo 0.013      0.069         -
-    ##               b_week 0.003      0.149         -
-    ##  b_groupplacebo:week 0.001      0.099         -
-    ##     sd_id__Intercept 0.043      0.539         -
-    ##                  phi 0.045      0.811         -
+    ##          b_Intercept 0.008      0.108         -
+    ##        b_cu_baseline 0.009      0.133         -
+    ##       b_groupplacebo 0.041      0.126         -
+    ##               b_week 0.003      0.162         -
+    ##  b_groupplacebo:week 0.012      0.090         -
+    ##     sd_id__Intercept 0.047      0.524         -
+    ##                  phi 0.046      0.839         -
 
 Lastly, we will continue the posterior predictive check by analyzing the
 randomized PIT values.
@@ -1449,7 +1506,7 @@ p4 <- ppc_loo_intervals(get_y(fit_beta_binomial), y_sim, psis_object = psis_obje
 (p1 + p2 + p3 + p4) + plot_layout(ncol = 2)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-70-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-71-1.png)<!-- -->
 
 There are still some discrepancies in the fit, but the results are
 somewhat borderline. We can also check the calibration of the
@@ -1468,7 +1525,7 @@ autoplot(rd) +
   bayesplot::theme_default(base_family = "sans", base_size = 16)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-71-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-72-1.png)<!-- -->
 
 ``` r
 th <- 27
@@ -1483,7 +1540,7 @@ autoplot(rd) +
   bayesplot::theme_default(base_family = "sans", base_size = 16)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-72-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-73-1.png)<!-- -->
 
 The calibration is pretty good.
 
@@ -1534,18 +1591,18 @@ cu_df |>
         axis.line.x = element_blank())
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-74-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-75-1.png)<!-- -->
 
 We observe that the treatment seems to have an effect. Let us evaluate
 the difference.
 
 ``` r
-set.seed(123)
-
-cu_df |>
+pred_diff <- cu_df |>
   data_grid(group, week, cu_baseline = 28, id = 128, set = 28) |>
   add_predicted_draws(fit_beta_binomial, allow_new_levels = TRUE) |>
-  compare_levels(.prediction, by = group) |>
+  compare_levels(.prediction, by = group) 
+
+pred_diff |>
   ggplot(aes(x = .prediction)) +
   facet_grid(group ~ week, switch = "y", axes = "all_x",
              labeller = labeller(group = label_value, week = label_both)) +
@@ -1569,19 +1626,39 @@ cu_df |>
         axis.line.x = element_blank())
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-75-1.png)<!-- -->
-
-We observe that the effect of the treatment is probably positive: 
-for the last week,  probability is about 90%.  But, the effect seems
-fairly small. To observe a stronger effect, we can compare
-expected posterior predictions instead (which removes the variability
-caused by the beta-binomial model).
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-76-1.png)<!-- -->
 
 ``` r
-cu_df |>
+quantiles_pred_diff <- 
+  rbind(
+    quantile(pred_diff$.prediction[pred_diff$week == 4],  c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95)),
+    quantile(pred_diff$.prediction[pred_diff$week == 8],  c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95)),
+    quantile(pred_diff$.prediction[pred_diff$week == 12], c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95))
+    )
+
+rownames(quantiles_pred_diff) <- c('Week 4', 'Week 8', 'Week 12')
+quantiles_pred_diff
+```
+
+    ##         5% 10% 20% 50% 80% 90% 95%
+    ## Week 4  -8  -4   0   0   7  12  16
+    ## Week 8  -6  -3   0   0   9  14  18
+    ## Week 12 -5  -1   0   2  12  17  21
+
+We observe an over 80% probability that the effect is non-negative, and
+it seems to be stronger in the later weeks. However, the spread of
+predictions is pretty large. Let us make the estimate tighter by
+comparing expected posterior predictions instead (which removes the
+variability caused by the beta-binomial model).
+
+``` r
+set.seed(123)
+pred_e_diff <- cu_df |>
   data_grid(group, week, cu_baseline = 28, id = 128, set = 28) |>
   add_epred_draws(fit_beta_binomial, allow_new_levels = TRUE) |>
-  compare_levels(.epred, by = group) |>
+  compare_levels(.epred, by = group)
+
+pred_e_diff |>
   ggplot(aes(x = .epred)) +
   facet_grid(group ~ week, switch = "y", axes = "all_x",
              labeller = labeller(group = label_value, week = label_both)) +
@@ -1606,21 +1683,45 @@ cu_df |>
         axis.line.x = element_blank())
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-76-1.png)<!-- -->
-
-We see that the expected effect is definitely positive for later weeks.
-We can further reduce the variability in the estimate by ignoring the
-randomness due to the patient’s random effect. We remove so-called
-*aleatoric uncertainty* (variability given by the probabilistic nature
-of the model) and keep merely the *epistemic uncertainty*; uncertainty
-due to the lack of knowledge.
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-78-1.png)<!-- -->
 
 ``` r
-cu_df |>
+quantiles_pred_e_diff <- 
+  rbind(
+    quantile(pred_e_diff$.epred[pred_e_diff$week == 4],  c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95)),
+    quantile(pred_e_diff$.epred[pred_e_diff$week == 8],  c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95)),
+    quantile(pred_e_diff$.epred[pred_e_diff$week == 12], c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95))
+    )
+
+rownames(quantiles_pred_e_diff) <- c('Week 4', 'Week 8', 'Week 12')
+quantiles_pred_e_diff
+```
+
+    ##                  5%         10%        20%      50%      80%       90%
+    ## Week 4  -0.42520050 -0.01140396 0.03984256 1.000591 4.073293  6.263417
+    ## Week 8   0.00494116  0.04473014 0.25048388 2.192169 6.488704  8.747276
+    ## Week 12  0.02859521  0.11577243 0.51117496 3.469589 8.931773 11.474189
+    ##               95%
+    ## Week 4   8.275757
+    ## Week 8  10.905290
+    ## Week 12 13.501633
+
+We see that the expected effect is definitely positive. We can further
+reduce the variability of the estimate by ignoring the randomness
+arising from the patient’s random effect. We remove so-called *aleatoric
+uncertainty* (variability given by the probabilistic nature of the
+model) and keep merely the *epistemic uncertainty*; uncertainty due to
+the lack of knowledge.
+
+``` r
+set.seed(123)
+
+pred_e_diff_nore <- cu_df |>
   data_grid(group, week, cu_baseline = 28, id = 128, set = 28) |>
   add_epred_draws(fit_beta_binomial, re_formula = NA, allow_new_levels = TRUE) |>
-  compare_levels(.epred, by = group) |>
-  ggplot(aes(x = .epred)) +
+  compare_levels(.epred, by = group) 
+  
+pred_e_diff_nore |>  ggplot(aes(x = .epred)) +
   facet_grid(group ~ week, switch = "y", axes = "all_x",
              labeller = labeller(group = label_value, week = label_both)) +
   stat_dotsinterval(quantiles = 100, fill = 'skyblue', slab_color = 'skyblue', 
@@ -1644,26 +1745,185 @@ cu_df |>
         axis.line.x = element_blank())
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-77-1.png)<!-- -->
-
-To understand what is going on here. Let us assume a simple linear
-regression model $Y = \text{treatment} + \varepsilon$, where
-$\varepsilon \sim N(0, \sigma^2)$. Now, the expected effect of treatment
-is simply 1. But, let’s assume that $\varepsilon$ has fairly large
-variance, say $\sigma = 5$. Hence, there is a lot of inherent
-uncertainty in the model. Thus, if we simulate the effect of the
-treatment, we get the distribution of $N(1,50)$
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-80-1.png)<!-- -->
 
 ``` r
-hist(1 + rnorm(10000,0,5) - rnorm(10000,0,5), main = '', xlab = 'Treatment Effect', breaks = 100)
+quantiles_pred_e_diff_nore <- 
+  rbind(
+    quantile(pred_e_diff_nore$.epred[pred_e_diff_nore$week == 4],  c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95)),
+    quantile(pred_e_diff_nore$.epred[pred_e_diff_nore$week == 8],  c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95)),
+    quantile(pred_e_diff_nore$.epred[pred_e_diff_nore$week == 12], c(0.05, 0.1, 0.2, 0.5, 0.8, 0.9, 0.95))
+    )
+
+rownames(quantiles_pred_e_diff_nore) <- c('Week 4', 'Week 8', 'Week 12')
+quantiles_pred_e_diff_nore
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-78-1.png)<!-- -->
+    ##                 5%       10%       20%      50%       80%       90%       95%
+    ## Week 4  -1.0419977 -0.160854 0.9929368 3.337805  6.042708  7.569687  8.737294
+    ## Week 8   0.7985805  1.980366 3.4543532 6.297962  9.452420 11.089667 12.337009
+    ## Week 12  2.4547653  4.167854 5.9273328 9.541981 12.943788 14.583368 15.983333
 
-Overall, there is a ‘significant’ effect of the treatment of 1, but the
-actual result is dominated by the noise.
+We observe that without individual random effects, the effect is now
+significantly positive. To understand what is going on, let us plot the
+predictions obtained by ignoring the random effects (i.e., setting their
+values to zero).
 
-Let us check the chains and the sensitivity of our result to the
+``` r
+set.seed(123)
+
+cu_df |>
+  data_grid(group, week, cu_baseline = 28, id = 128, set = 28) |>
+  add_predicted_draws(fit_beta_binomial, re_formula = NA, allow_new_levels = TRUE) |>
+  ggplot(aes(x = .prediction)) +
+  facet_grid(group ~ week, switch = "y", axes = "all_x",
+             labeller = labeller(group = label_value, week = label_both)) +
+  stat_dotsinterval(quantiles = 100, fill = 'skyblue', slab_color = 'skyblue', 
+                    binwidth = 2/3, overflow = "keep") +
+  coord_cartesian(expand = FALSE, clip = "off") +
+  labs(x = "", y = "") +
+  scale_x_continuous(lim = c(0, 28)) +
+  labs(x = "Prediction of cu for re = 0", y = "Week") +
+  theme(strip.background = element_blank(), strip.placement = "outside",
+        panel.spacing.x = unit(0.5, "lines"),
+        panel.spacing.y = unit(5, "lines"),
+        panel.background = element_blank(),
+        plot.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.x = element_blank())
+```
+
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-82-1.png)<!-- -->
+
+We can also plot the expected predictions without the random effects.
+
+``` r
+cu_df |>
+  data_grid(group, week, cu_baseline = 28, id = 128, set = 28) |>
+  add_epred_draws(fit_beta_binomial, re_formula = NA, allow_new_levels = TRUE) |>
+  ggplot(aes(x = .epred)) +
+  facet_grid(group ~ week, switch = "y", axes = "all_x",
+             labeller = labeller(group = label_value, week = label_both)) +
+  stat_dotsinterval(quantiles = 100, fill = 'skyblue', slab_color = 'skyblue', 
+                    binwidth = 2/3, overflow = "keep") +
+  coord_cartesian(expand = FALSE, clip = "off") +
+  labs(x = "", y = "") +
+  scale_x_continuous(lim = c(0, 28)) +
+  labs(x = "Prediction of expected cu for re = 0", y = "Week") +
+  theme(strip.background = element_blank(), strip.placement = "outside",
+        panel.spacing.x = unit(1, "lines"),
+        panel.spacing.y = unit(5, "lines"),
+        panel.background = element_blank(),
+        plot.background = element_blank(),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.line.x = element_blank())
+```
+
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-83-1.png)<!-- -->
+
+We observe that there is a much smaller number of observations at the
+boundaries when random individual effects are not included. There are
+almost no 0s, and a reduced number of 28s, which are mostly present only in the placebo group and in the treatment group for week 4. We observe almost
+no 28s in the treatment group for weeks 8 and 12. This means that a
+significant portion of these predicted extreme values is “generated” by
+the model’s random effects. Going back to the fit, we notice that the
+standard deviation for the random effect is quite large.
+
+``` r
+dens <- density(as_draws_df(fit_beta_binomial)$sd_id__Intercept)
+dens_data <- data.frame(x = dens$x, y = dens$y)
+
+ggplot(dens_data, aes(x = x, y = y)) +  geom_line(linewidth = 1) + xlab('Id Standard Deviation') + ylab('Posterior Density')
+```
+
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-84-1.png)<!-- -->
+
+We also need to remember that the predictors and the random effects
+enter into the model on the logit scale:
+
+``` math
+\text{logit }\mu = X\beta + \text{Ind},
+```
+
+where $\mu$ is the expected probability of success $p$ in the
+beta-binomial model. This implies that, provided that $\text{Ind}$ is
+generated large, it steers the probability towards 0 or 1 (i.e., to the
+count response 0 or 28) and the effect of the predictors seems to be too
+small to compensate for it. In other words, the model predicts that a
+notable portion of the patients are not influenced by the Nabiximols
+treatment; the model predicts that they stop using Cannabis right away
+or keep using it every day regardless of the treatment.
+
+We provide a simple simulation of what is going on. We assume a
+beta-binomial model with a single effect $\beta \sim N(-2,0.25)$ and a
+random effect $\text{Id} \sim N(0,16)$. When we ignore the random
+effect, the treatment clearly lowers the predicted counts. However, when
+the random effect is present, it pushes some simulated probabilities to the extremes, and hence, the observed treatment effect is much lower.
+
+``` r
+set.seed(123)
+mu_eff <- -1.5
+sigma_eff <- 0.5
+sigma_rand <- 4
+phi <- 4
+
+pred_with_re <- numeric(10000)
+for (i in 1:10000){
+  
+  mu1 <- ilogit(rnorm(1,mu_eff,sigma_eff) + rnorm(1,0,sigma_rand))
+  mu2 <- ilogit(rnorm(1,0,sigma_rand))
+  
+  p1 <- rbeta(1, mu1*phi, (1-mu1)*phi)
+  p2 <- rbeta(1, mu2*phi, (1-mu2)*phi)      
+  
+  pred_with_re[i] <- rbinom(1,28,p1) - rbinom(1,28,p2)
+}
+
+pred_no_re = numeric(10000)
+for (i in 1:10000){
+  
+  mu1 <- ilogit(rnorm(1,mu_eff,sigma_eff))
+  mu2 <- ilogit(0)
+  
+  p1 <- rbeta(1, mu1*phi, (1-mu1)*phi)
+  p2 <- rbeta(1, mu2*phi, (1-mu2)*phi)      
+  
+  pred_no_re[i] <- rbinom(1,28,p1) - rbinom(1,28,p2)
+}
+
+
+data <- data.frame(no_random_effect = pred_no_re, random_effect = pred_with_re)
+
+data |> 
+  pivot_longer(cols = c(no_random_effect, random_effect), names_to = "Group", values_to = "Counts") |>
+  ggplot(aes(x = Counts, fill = Group)) +
+  geom_histogram(position = "identity", alpha = 0.5, bins = 30, color = "white") +
+  labs(title = "", x = "Predicted Counts", y = "Frequency") +
+  theme_minimal()
+```
+
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-85-1.png)<!-- -->
+
+``` r
+apply(data,2,quantile)
+```
+
+    ##      no_random_effect random_effect
+    ## 0%                -28           -28
+    ## 25%               -15           -18
+    ## 50%                -9            -1
+    ## 75%                -3             5
+    ## 100%               26            28
+
+Let us now check the chains and the sensitivity of our result to the
 selection of priors.
 
 ``` r
@@ -1692,7 +1952,7 @@ p3 <-mcmc_rank_overlay(effect_draws3, n_bins  = 25)
 (p1 + p2 + p3) + plot_layout(ncol = 3)
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-80-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-88-1.png)<!-- -->
 
 ``` r
 summary(effect_draws1)
@@ -1701,7 +1961,7 @@ summary(effect_draws1)
     ## # A tibble: 1 × 10
     ##   variable           mean median    sd   mad    q5   q95  rhat ess_bulk ess_tail
     ##   <chr>             <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>    <dbl>
-    ## 1 placebo - nabixi…  3.85   3.75  3.48  3.34 -1.54  9.85  1.01     666.    1374.
+    ## 1 placebo - nabixi…  3.54   3.34  3.08  2.96 -1.04  8.74  1.00     697.     971.
 
 ``` r
 summary(effect_draws2)
@@ -1710,7 +1970,7 @@ summary(effect_draws2)
     ## # A tibble: 1 × 10
     ##   variable           mean median    sd   mad    q5   q95  rhat ess_bulk ess_tail
     ##   <chr>             <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>    <dbl>
-    ## 1 placebo - nabixi…  6.64   6.66  3.86  3.85 0.389  13.0  1.01     607.    1239.
+    ## 1 placebo - nabixi…  6.39   6.30  3.53  3.55 0.799  12.3  1.01     638.     879.
 
 ``` r
 summary(effect_draws3)
@@ -1719,7 +1979,7 @@ summary(effect_draws3)
     ## # A tibble: 1 × 10
     ##   variable           mean median    sd   mad    q5   q95  rhat ess_bulk ess_tail
     ##   <chr>             <dbl>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>    <dbl>    <dbl>
-    ## 1 placebo - nabixi…  9.55   9.68  4.31  4.38  2.24  16.4  1.01     652.    1583.
+    ## 1 placebo - nabixi…  9.40   9.54  4.08  4.18  2.45  16.0  1.01     705.     987.
 
 ``` r
 trt_effect_draws <- trt_effect_draws |>
@@ -1738,7 +1998,7 @@ trt_effect_draws <- trt_effect_draws |>
 trt_effect_draws |> powerscale_plot_dens()
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-81-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-89-1.png)<!-- -->
 
 The diagnostics for the chains correspond to our earlier results about
 the parameters. It also seems that the result is quite insensitive to
@@ -1749,8 +2009,8 @@ without the treatment.
 
 ``` r
 fit_beta_binomial_no_treatment <- brm(formula = cu | trials(set)  ~ cu_baseline + week + (1 | id),
-                         prior = c(prior(normal(0, 3), class = Intercept), 
-                                   prior(normal(0, 3), class = b)),
+                         prior = c(prior(normal(0, 1.5), class = Intercept), 
+                                   prior(normal(0, 1.5), class = b)),
                          data = cu_df, beta_binomial(link = logit), save_pars = save_pars(all = TRUE), 
                          refresh = 0, silent = 2, seed = 123)
 ```
@@ -1759,16 +2019,13 @@ fit_beta_binomial_no_treatment <- brm(formula = cu | trials(set)  ~ cu_baseline 
 fit_beta_binomial_no_treatment <- add_criterion(fit_beta_binomial_no_treatment, criterion = "loo", save_psis = TRUE, moment_match = TRUE, reloo = TRUE)
 ```
 
-    ## Error in eval(expr, envir) : 
-    ##   Exception: beta_binomial_lpmf: Second prior sample size parameter[220] is 0, but must be positive finite! (in 'string', line 56, column 4 to column 73)
-
 ``` r
 loo_compare(fit_beta_binomial_no_treatment, fit_beta_binomial)
 ```
 
     ##                           model elpd_diff se_diff p_worse       diag_diff
     ##  fit_beta_binomial_no_treatment       0.0     0.0      NA                
-    ##               fit_beta_binomial      -1.6     2.3    0.75 |elpd_diff| < 4
+    ##               fit_beta_binomial      -1.0     2.3    0.67 |elpd_diff| < 4
     ##  diag_elpd
     ##           
     ## 
@@ -1776,17 +2033,16 @@ loo_compare(fit_beta_binomial_no_treatment, fit_beta_binomial)
 We observe that the difference between models in terms of LOOIC is
 small. This is because, as we learned when plotting the treatment
 effects, the effect is quite small compared to aleatoric uncertainty
-modeled by the beta-binomial model.
+modeled by the random effects (and the beta-binomial model).
 
-We can also compare the models in terms of expected predictions, let’s
-use the expected absolute error and we will again set random effects to
-zero.
+We can also compare the models based on expected predictions. Let’s use
+the expected absolute error.
 
 ``` r
-dif1 <- abs(cu_df$cu - E_loo(posterior_epred(fit_beta_binomial, re_formula = NA),
+dif1 <- abs(cu_df$cu - E_loo(posterior_epred(fit_beta_binomial),
                        loo(fit_beta_binomial)$psis_object, type = "mean")$value)
                        
-dif2 <- abs(cu_df$cu - E_loo(posterior_epred(fit_beta_binomial_no_treatment, re_formula = NA),
+dif2 <- abs(cu_df$cu - E_loo(posterior_epred(fit_beta_binomial_no_treatment),
                        loo(fit_beta_binomial_no_treatment)$psis_object, type = "mean")$value)                     
 
 dens1 <- density(dif1)
@@ -1802,15 +2058,34 @@ ggplot() +
   xlab('LOO-CV expected abs. error') + ylab('Distribution over Patients from the Dataset')
 ```
 
-![](Second_circle_3_files/figure-GFM/unnamed-chunk-84-1.png)<!-- -->
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-92-1.png)<!-- -->
 
 ``` r
-mean(dif1) - mean(dif2)
+dens <- density(dif1 - dif2)
+dens_data <- data.frame(x = dens$x, y = dens$y)
+
+ggplot() +  
+  geom_line(data = dens_data, aes(x = x, y = y), linewidth = 1) +
+  xlab('LOO-CV expected abs. error (model with treatment - model without treatment)') + ylab('Distribution over Patients from the Dataset')
 ```
 
-    ## [1] -0.3344699
+![](Second_circle_3_files/figure-GFM/unnamed-chunk-93-1.png)<!-- -->
 
-Again, the difference is very minor.
+``` r
+quantile(dif2-dif1)
+```
+
+    ##          0%         25%         50%         75%        100% 
+    ## -3.12668959 -0.36835992  0.04820809  0.40418053  4.94509018
+
+``` r
+sum(dif2>dif1)/length(dif1)
+```
+
+    ## [1] 0.536965
+
+We observe that the differences in prediction accuracy are again very
+minor.
 
 ## References
 
