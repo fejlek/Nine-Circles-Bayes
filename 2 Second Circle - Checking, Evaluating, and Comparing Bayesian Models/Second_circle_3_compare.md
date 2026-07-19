@@ -135,11 +135,10 @@ where $k$ is the number of estimated parameters, i.e., the correction is
 the number of parameters that had to be estimated from the data. The AIC
 itself is defined as $\text{AIC} = -2\text{ ELPD}_\text{AIC}$ to be on
 the same scale as the deviance
-
-
-
-$D = -2 \log p(y \mid \hat \theta_\text{MLE})$, which we know from
-various likelihood ratio tests.
+``` math
+D = -2 \log p(y \mid \hat \theta_\text{MLE}),
+```
+which we know from various likelihood ratio tests.
 
 Deviance information criterion is defined similarly to AIC (Gelman et
 al. 1995) as
