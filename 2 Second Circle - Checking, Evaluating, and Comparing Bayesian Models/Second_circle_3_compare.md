@@ -23,7 +23,7 @@ accuracy on unseen data. <br/>
   - [Poisson Model](#poisson-model)
     - [Posterior Predictive Check](#posterior-predictive-check)
   - [Negative Binomial Model](#negative-binomial-model)
-    -[Model Fit](#model-fit)
+    - [Model Fit](#model-fit)
   - [Hurdle Model](#hurdle-model)
   - [Zero-inflated Model](#zero-inflated-model)
   - [Model Comparison](#model-comparison)
