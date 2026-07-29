@@ -69,7 +69,7 @@ necessitates the definition of *prior probability* $p(\theta)$, which is
 used to model our initial knowledge about the parameters $\theta$ before
 we perform the inference. Using the observed data $y$, we can then
 update our beliefs encoded in the prior probability $p(\theta)$ using
-Bayes rule
+Bayes’ rule
 
 ``` math
 p(\theta \mid y) = \frac{p(y, \theta)}{p(y)} = \frac{p(y \mid \theta)p(\theta)}{\int p(y \mid \theta)p(\theta) \mathrm{d}\theta}
@@ -93,7 +93,7 @@ p(\tilde y \mid y) = \int p(\tilde y, \theta \mid y) \mathrm{d}\theta = \int p(\
 
 On paper, the Bayesian inference seems more involved; first, we need to
 specify the full probability model, not just the likelihood. In
-addition, evaluating the Bayes rule is often much more complicated than,
+addition, evaluating the Bayes’ rule is often much more complicated than,
 e.g., computing the MLE estimator (the integral in the denominator is
 almost never analytically solvable, and since models often include many
 parameters, traditional numerical integration methods are also not
