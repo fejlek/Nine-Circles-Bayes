@@ -1419,7 +1419,7 @@ our estimates did not suffer that much.
 ## Rat Tumor Dataset Revisited
 
 Let us return to the Rat Tumor Dataset, since we did not perform the
-diagnostics, and we observe that centered parametrization can cause
+diagnostics, and we observed that centered parametrization can cause
 problems.
 
 ``` r
