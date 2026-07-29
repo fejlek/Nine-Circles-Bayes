@@ -1586,7 +1586,7 @@ overwhelmingly support the model with the **treatment**.
 
 ### Prior Predictive Check
 
-The random effect is complex enough that it warrants some caution when
+Our random effect model is just complex enough that it warrants some caution when
 computing Bayes factors. We know that the Bayes factors depend heavily
 on our priors, so we should check that our priors are reasonable.
 Additionally, computing Bayes factors (using bridge sampling) is
