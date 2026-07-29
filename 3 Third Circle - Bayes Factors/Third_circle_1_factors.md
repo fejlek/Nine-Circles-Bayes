@@ -1833,6 +1833,8 @@ dim(BF_div)
 
     ## [1] 92  4
 
+We had to remove 92 simulations out of the original 1000. 
+
 Next, we will compute the posterior probabilities for both hypotheses
 from the obtained Bayes factors using the following formulas
 

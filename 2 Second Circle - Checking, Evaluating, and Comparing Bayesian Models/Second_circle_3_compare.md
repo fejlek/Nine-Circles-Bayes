@@ -1064,10 +1064,8 @@ We observe a notable decrase in predictive performance of the model when
 
 The second dataset we will have a look at is the Clinical Trial dataset
 from
-<https://avehtari.github.io/Bayesian-Workflow/nabiximols/nabiximols.html>
-based on \[<l@intzeris2019nabiximols>\]. We will also mostly follow the
-analysis performed in
-<https://avehtari.github.io/Bayesian-Workflow/nabiximols/nabiximols.html>.
+<https://avehtari.github.io/Bayesian-Workflow/nabiximols/nabiximols.html>. 
+and we will also mostly follow the analysis performed there.
 The data contains information about a randomized trial in which
 participants received a 12-week treatment of cannabis dependence
 involving weekly clinical reviews, structured counseling, and flexible
