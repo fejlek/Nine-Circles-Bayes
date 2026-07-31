@@ -245,9 +245,10 @@ cross-validation is (Gelman et al. 1995)\]
 
 where $p(\theta \mid y_{[-i]})$ denotes the posterior without ith
 observation. We can then estimate the effective sample size as
-$p_\text{loo-cv} = \text{ELPD}_\text{loo-cv} - \text{LPPD}$ and define
-the information criterion as
-$\text{LOOIC} = -2\text{ ELPD}_\text{loo-cv}$.
+``` math
+p_\text{loo-cv} = \text{ELPD}_\text{loo-cv} - \text{LPPD} 
+```
+and define the information criterion as $\text{LOOIC} = -2\text{ ELPD}_\text{loo-cv}$.
 
 It can be shown that AIC, DIC, and WAIC are all asymptotically
 equivalent to a LOO cross-validation (AIC to a LOO-CV with MLE
