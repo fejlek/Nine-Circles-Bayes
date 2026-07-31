@@ -246,7 +246,7 @@ cross-validation is (Gelman et al. 1995)\]
 where $p(\theta \mid y_{[-i]})$ denotes the posterior without ith
 observation. We can then estimate the effective sample size as
 ``` math
-p_\text{loo-cv} = \text{ELPD}_\text{loo-cv} - \text{LPPD} 
+p_\text{loo-cv} = \text{LPPD} - \text{ELPD}_\text{loo-cv} 
 ```
 and define the information criterion as $\text{LOOIC} = -2\text{ ELPD}_\text{loo-cv}$.
 
