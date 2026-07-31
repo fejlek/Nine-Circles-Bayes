@@ -240,7 +240,7 @@ The estimate of the expected error for a new observation using LOO
 cross-validation is (Gelman et al. 1995)\]
 
 ``` math
-\text{ELPD}_\text{loo-cv} =  \sum_{i = 1}^n \log \int p(y_i \mid \theta) p(\theta \mid y_{[-i]})\text{ d}\theta,
+\text{ELPD}_\text{loo-cv} =  \sum_{i = 1}^n \log p_{\text{post}[-i]}(y_i) = \sum_{i = 1}^n \log \int p(y_i \mid \theta) p(\theta \mid y_{[-i]})\text{ d}\theta,
 ```
 
 where $p(\theta \mid y_{[-i]})$ denotes the posterior without ith
