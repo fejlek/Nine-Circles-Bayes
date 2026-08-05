@@ -1,4 +1,4 @@
-# The Third Circle: Bayesian Linear Models, Part One
+# The Fourth Circle: Bayesian Regression Models, Part One
 <big>**Bayesian Linear Regression**</big>
 
 <br/>
@@ -12,7 +12,7 @@ circles. However, we did not do so in one place. Instead, we covered
 regression examples as illustrations of other topics such as comparisons
 of Bayesian models and Bayes factors. Hence, we will now correct for
 this fragmentation of one of the fundamental topics of Bayesian modeling
-and focus this circle exclusively on Bayesian linear models. <br/>
+and focus this circle exclusively on Bayesian regression models. <br/>
 
 ## Table of Contents
 
