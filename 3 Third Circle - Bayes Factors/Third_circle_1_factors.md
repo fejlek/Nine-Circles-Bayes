@@ -863,6 +863,7 @@ prob_wheel(ab)
 ```
 
 ![](Third_circle_1_files/figure-GFM/unnamed-chunk-30-1.png)<!-- -->
+
 We observe that the Bayes factors are quite close to 1; the evidence
 that the data provides is quite weak. We should note that the posterior
 probabilities for multiple hypotheses are computed using the Bayes
