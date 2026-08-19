@@ -120,14 +120,14 @@ our priors.
 We should also note that in some particular cases, the computation of
 Bayes factors simplifies quite a bit. The first case is point hypotheses
 $\mathcal{H}_0: \theta = \theta_0$
-vs. $\mathcal{H}_1: \theta = \theta_1$ in which the Bayes factor reduces
+vs $\mathcal{H}_1: \theta = \theta_1$ in which the Bayes factor reduces
 to the standard likelihood ratio 
 ```math
  B(\mathcal H_0;\mathcal H_1) = \frac{p(y \mid \mathcal H_0)}{p(y \mid \mathcal H_1)} = \frac{p(y\mid \theta_0)}{p(y\mid \theta_1)}.
 ``` 
 The second type are hypothesis such as
 $\mathcal{H}_0: \theta > \theta_0$
-vs. $\mathcal{H}_1: \theta \leq \theta_0$. Then, we can specify a single
+vs $\mathcal{H}_1: \theta \leq \theta_0$. Then, we can specify a single
 prior $p(\theta)$ on the full parameter space $\Theta$ (Bozza et al.
 2022), and we can derive the Bayes factor directly from the prior odds
 ```math
