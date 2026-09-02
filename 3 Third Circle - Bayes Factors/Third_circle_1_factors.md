@@ -425,7 +425,7 @@ We mentioned in the introduction that the computation of Bayes factors
 for null hypothesis testing can be simplified using the Savage-Dickey
 density ratio. Let’s assume a one-parameter model and a test of the
 hypothesis $\mathcal{H}_0: \theta = \theta_0$
-vs. $\mathcal{H}_1: \theta \sim p(\theta \mid \mathcal{H}_1)$. To derive
+vs. $`\mathcal{H}_1: \theta \sim p(\theta \mid \mathcal{H}_1)`$. To derive
 the Savage-Dickey Density Ratio, let us write the Bayes factor
 $B(\mathcal H_0;\mathcal H_1)$ and multiply both the numerator and the
 denominator by the prior density under the alternative evaluated
