@@ -502,14 +502,17 @@ hold. Let denote the remaining “nuisance” parameters of the model as
 $\varphi$. We can then write
 (<https://statproofbook.github.io/P/bf-sddr.html>)
 
-$$
+```math
 \begin{align*}
 p(y \mid \mathcal{H}_0) &= \int p(y \mid \varphi, \mathcal{H}_0)p(\varphi \mid \mathcal{H}_0)\text{ d}\varphi\\
 & = \int p(y \mid \theta_0, \varphi, \mathcal{H}_1)p(\varphi \mid \mathcal{H}_0)\text{ d}\varphi\\
 & = \int p(y \mid \theta_0, \varphi, \mathcal{H}_1)p(\varphi \mid \theta_0,\mathcal{H}_1)\text{ d}\varphi =p(y \mid \theta_0,\mathcal{H}_1),
 \end{align*}
-$$ in which the second last equality holds provided that
-$$p(\varphi \mid \mathcal{H}_0) = p(\varphi \mid \theta_0,\mathcal{H}_1).$$
+``` 
+in which the second last equality holds provided that
+```math
+p(\varphi \mid \mathcal{H}_0) = p(\varphi \mid \theta_0,\mathcal{H}_1).$$
+```
 In other words, the Savage-Dickey density ratio is valid provided that
 the prior of the nuisance parameters under the null model equals the
 conditional prior of the nuisance parameters under the alternative for
